@@ -1,271 +1,286 @@
-# OpenAI Agents SDK (JavaScript/TypeScript)
+# Contract-Driven AI Platform
 
-[![npm version](https://badge.fury.io/js/@openai%2Fagents.svg)](https://badge.fury.io/js/@openai%2Fagents)
-[![CI](https://github.com/openai/openai-agents-js/actions/workflows/test.yml/badge.svg)](https://github.com/openai/openai-agents-js/actions/workflows/test.yml)
+**The first AI orchestration platform that treats agents like APIs - with contracts, governance, and trust scores.**
 
-The OpenAI Agents SDK is a lightweight yet powerful framework for building multi-agent workflows in JavaScript/TypeScript. It is provider-agnostic, supporting OpenAI APIs and more.
+Stop fighting with prompts. Start building with contracts.
 
-<img src="https://cdn.openai.com/API/docs/images/orchestration.png" alt="Image of the Agents Tracing UI" style="max-height: 803px;">
+[![Tests](https://github.com/yourorg/contract-ai-platform/workflows/CI/badge.svg)](https://github.com/yourorg/contract-ai-platform/actions)
+[![Coverage](https://codecov.io/gh/yourorg/contract-ai-platform/badge.svg)](https://codecov.io/gh/yourorg/contract-ai-platform)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
 
-> [!NOTE]
-> Looking for the Python version? Check out [Agents SDK Python](https://github.com/openai/openai-agents-python).
+## The Problem
 
-## Core concepts
+Current AI orchestration: Hope the prompt works, pray it doesn't break, no way to govern or audit decisions.
 
-1. **Agents**: LLMs configured with instructions, tools, guardrails, and handoffs.
-2. **Handoffs**: Specialized tool calls for transferring control between agents.
-3. **Guardrails**: Configurable safety checks for input and output validation.
-4. **Tracing**: Built-in tracking of agent runs, allowing you to view, debug, and optimize your workflows.
+## The Solution
 
-Explore the [`examples/`](examples/) directory to see the SDK in action.
+**Contracts** define what agents should do (like OpenAPI for REST APIs)  
+**Policy Engine** governs which agents execute (like K8s for containers)  
+**Trust Scores** track agent performance (like credit scores for reliability)
 
-## Supported Features
+## Why Contracts > Prompts
 
-- [x] **Multi-Agent Workflows**: Compose and orchestrate multiple agents in a single workflow.
-- [x] **Tool Integration**: Seamlessly call tools/functions from within agent responses.
-- [x] **Handoffs**: Transfer control between agents dynamically during a run.
-- [x] **Structured Outputs**: Support for both plain text and schema-validated structured outputs.
-- [x] **Streaming Responses**: Stream agent outputs and events in real time.
-- [x] **Tracing & Debugging**: Built-in tracing for visualizing and debugging agent runs.
-- [x] **Guardrails**: Input and output validation for safety and reliability.
-- [x] **Parallelization**: Run agents or tool calls in parallel and aggregate results.
-- [x] **Human-in-the-Loop**: Integrate human approval or intervention into workflows.
-- [x] **Realtime Voice Agents**: Build realtime voice agents using WebRTC or WebSockets
-- [x] **Local MCP Server Support**: Give an Agent access to a locally running MCP server to provide tools
-- [x] **Separate optimized browser package**: Dedicated package meant to run in the browser for Realtime agents.
-- [x] **Broader model support**: Use non-OpenAI models through the Vercel AI SDK adapter
-- [ ] **Long running functions**: Suspend an agent loop to execute a long-running function and revive it later <img src="https://img.shields.io/badge/Future-lightgrey" alt="Future" style="width: auto; height: 1em; vertical-align: middle;">
-- [ ] **Voice pipeline**: Chain text-based agents using speech-to-text and text-to-speech into a voice agent <img src="https://img.shields.io/badge/Future-lightgrey" alt="Future" style="width: auto; height: 1em; vertical-align: middle;">
+| Aspect | Traditional Prompts | Contract-Driven |
+|--------|-------------------|-----------------|
+| **Reliability** | Variable, context-dependent | Deterministic, validated |
+| **Governance** | Manual oversight required | Automated policy enforcement |
+| **Composition** | Difficult to combine | Dependency graphs, orchestration |
+| **Debugging** | Black box, hard to trace | Full audit trails, structured logs |
+| **Scaling** | Manual integration per agent | Pluggable architecture, auto-discovery |
+| **Trust** | Based on reputation | Based on measured performance metrics |
 
-## Get started
+## Key Features
 
-### Supported environments
+- ✅ **Contract-Driven Architecture**: Structured, typed contracts instead of ambiguous prompts
+- ✅ **Policy-Governed Orchestration**: Independent policy engine prevents agent gaming
+- ✅ **Trust-Based Agent Selection**: Agents selected by proven performance metrics
+- ✅ **Self-Evolving System**: Platform can propose and approve its own improvements
+- ✅ **Enterprise Observability**: Complete audit trails and real-time monitoring
+- ✅ **Multi-Domain Support**: Social media, financial research, healthcare, and more
+- ✅ **Production-Grade Operations**: CI/CD, runbooks, backup/recovery
 
-- Node.js 22 or later
-- Deno
-- Bun
+## Quick Start (5 minutes)
 
-Experimental support:
+### Prerequisites
 
-- Cloudflare Workers with `nodejs_compat` enabled
-
-[Check out the documentation](https://openai.github.io/openai-agents-js/guides/troubleshooting/) for more detailed information.
+- Node.js 22+
+- OpenAI API key
+- Pinecone API key (optional, for vector storage)
 
 ### Installation
 
 ```bash
-npm install @openai/agents zod@3
+npm install @yourorg/contract-ai-platform
 ```
 
-## Hello world example
+### Environment Setup
 
-```js
-import { Agent, run } from '@openai/agents';
+```bash
+cp .env.example .env
+# Edit .env with your API keys
+```
 
-const agent = new Agent({
-  name: 'Assistant',
-  instructions: 'You are a helpful assistant',
-});
+### Your First Contract
 
-const result = await run(
-  agent,
-  'Write a haiku about recursion in programming.',
+```typescript
+import { BuilderAgent } from '@yourorg/contract-ai-platform';
+
+const builder = new BuilderAgent();
+
+const requirement = {
+  description: "Build a social media management platform for agencies",
+  scale: 'production' as const,
+  technologies: ['auto-detect']
+};
+
+const manifest = await builder.build(requirement);
+console.log('Built system:', manifest.projectId);
+```
+
+**Output**: Complete React/Next.js frontend, Node.js backend, PostgreSQL database, Docker deployment, monitoring dashboard, and full test suite.
+
+### Orchestrate Existing Contracts
+
+```typescript
+import { PolicyAuthoritativeOrchestrator } from '@yourorg/contract-ai-platform';
+
+const orchestrator = new PolicyAuthoritativeOrchestrator();
+
+// Load enhancement areas from YAML
+const contracts = await orchestrator.orchestrateFromClientPrompt(
+  "Build comprehensive audience segmentation with psychographic analysis"
 );
-console.log(result.finalOutput);
-// Code within the code,
-// Functions calling themselves,
-// Infinite loop's dance.
+
+console.log(`Generated ${contracts.length} validated contracts`);
 ```
 
-(_If running this, ensure you set the `OPENAI_API_KEY` environment variable_)
+## Architecture Overview
 
-## Functions example
-
-```js
-import { z } from 'zod';
-import { Agent, run, tool } from '@openai/agents';
-
-const getWeatherTool = tool({
-  name: 'get_weather',
-  description: 'Get the weather for a given city',
-  parameters: z.object({ city: z.string() }),
-  execute: async (input) => {
-    return `The weather in ${input.city} is sunny`;
-  },
-});
-
-const agent = new Agent({
-  name: 'Data agent',
-  instructions: 'You are a data agent',
-  tools: [getWeatherTool],
-});
-
-async function main() {
-  const result = await run(agent, 'What is the weather in Tokyo?');
-  console.log(result.finalOutput);
-}
-
-main().catch(console.error);
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│   Interface     │    │  Orchestration   │    │   Execution     │
+│   Layer         │    │    Layer         │    │    Layer        │
+│                 │    │                  │    │                 │
+│ • YAML Config   │    │ • Policy Engine  │    │ • Domain Agents │
+│ • Builder Agent │    │ • Domain Class.  │    │ • Trust Scores  │
+│ • Natural Lang. │    │ • Agent Registry │    │ • Contracts     │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+         │                       │                       │
+         └───────────────────────┼───────────────────────┘
+                                 │
+                    ┌──────────────────┐
+                    │   Data Layer     │
+                    │                  │
+                    │ • Pinecone       │
+                    │ • Contract Store │
+                    │ • Audit Trails   │
+                    └──────────────────┘
 ```
 
-## Handoffs example
+## Domain Agents
 
-```js
-import { z } from 'zod';
-import { Agent, run, tool } from '@openai/agents';
+### Social Media Agent
+Content creation, engagement optimization, audience analysis, multi-platform integration.
 
-const getWeatherTool = tool({
-  name: 'get_weather',
-  description: 'Get the weather for a given city',
-  parameters: z.object({ city: z.string() }),
-  execute: async (input) => {
-    return `The weather in ${input.city} is sunny`;
-  },
-});
+### Financial Research Agent
+Multi-agent workflow: plan → search → write → verify with fact-checking.
 
-const dataAgent = new Agent({
-  name: 'Data agent',
-  instructions: 'You are a data agent',
-  handoffDescription: 'You know everything about the weather',
-  tools: [getWeatherTool],
-});
+### Healthcare Agent (Coming Soon)
+HIPAA-compliant medical workflows with privacy preservation.
 
-// Use Agent.create method to ensure the finalOutput type considers handoffs
-const agent = Agent.create({
-  name: 'Basic test agent',
-  instructions: 'You are a basic agent',
-  handoffs: [dataAgent],
-});
+### Custom Agents
+Easy to add new domains with standardized interfaces.
 
-async function main() {
-  const result = await run(agent, 'What is the weather in San Francisco?');
-  console.log(result.finalOutput);
-}
+## Use Cases
 
-main().catch(console.error);
+### Enterprise Social Media Management
+```yaml
+name: "Enterprise Social Platform"
+objective: "Multi-brand social media orchestration with governance"
+key_requirements:
+  - "Centralized content approval workflows"
+  - "Brand compliance automation"
+  - "Cross-platform performance analytics"
+  - "Crisis management protocols"
 ```
 
-## Voice Agent
-
-```js
-import { z } from 'zod';
-import { RealtimeAgent, RealtimeSession, tool } from '@openai/agents-realtime';
-
-const getWeatherTool = tool({
-  name: 'get_weather',
-  description: 'Get the weather for a given city',
-  parameters: z.object({ city: z.string() }),
-  execute: async (input) => {
-    return `The weather in ${input.city} is sunny`;
-  },
-});
-
-const agent = new RealtimeAgent({
-  name: 'Data agent',
-  instructions:
-    'You are a data agent. When you are asked to check weather, you must use the available tools.',
-  tools: [getWeatherTool],
-});
-
-// Intended to run in the browser
-const { apiKey } = await fetch('/path/to/ephemeral/key/generation').then(
-  (resp) => resp.json(),
-);
-// Automatically configures audio input/output — start talking
-const session = new RealtimeSession(agent);
-await session.connect({ apiKey });
+### Financial Research Automation
+```yaml
+name: "Institutional Research Platform"
+objective: "Automated investment research with regulatory compliance"
+key_requirements:
+  - "Multi-source data aggregation"
+  - "Fact verification pipelines"
+  - "Regulatory reporting automation"
+  - "Risk assessment integration"
 ```
 
-## Running Complete Examples
-
-The [`examples/`](examples/) directory contains a series of examples to get started:
-
-- `pnpm examples:basic` - Basic example with handoffs and tool calling
-- `pnpm examples:agents-as-tools` - Using agents as tools for translation
-- `pnpm examples:tools-web-search` - Using the web search tool
-- `pnpm examples:tools-file-search` - Using the file search tool
-- `pnpm examples:deterministic` - Deterministic multi-agent workflow
-- `pnpm examples:parallelization` - Running agents in parallel and picking the best result
-- `pnpm examples:human-in-the-loop` - Human approval for certain tool calls
-- `pnpm examples:streamed` - Streaming agent output and events in real time
-- `pnpm examples:streamed:human-in-the-loop` - Streaming output with human-in-the-loop approval
-- `pnpm examples:routing` - Routing between agents based on language or context
-- `pnpm examples:realtime-demo` - Framework agnostic Voice Agent example
-- `pnpm examples:realtime-next` - Next.js Voice Agent example application
-
-## The agent loop
-
-When you call `Runner.run()`, the SDK executes a loop until a final output is produced.
-
-1. The agent is invoked with the given input, using the model and settings configured on the agent (or globally).
-2. The LLM returns a response, which may include tool calls or handoff requests.
-3. If the response contains a final output (see below), the loop ends and the result is returned.
-4. If the response contains a handoff, the agent is switched to the new agent and the loop continues.
-5. If there are tool calls, the tools are executed, their results are appended to the message history, and the loop continues.
-
-You can control the maximum number of iterations with the `maxTurns` parameter.
-
-### Final output
-
-The final output is the last thing the agent produces in the loop.
-
-1. If the agent has an `outputType` (structured output), the loop ends when the LLM returns a response matching that type.
-2. If there is no `outputType` (plain text), the first LLM response without tool calls or handoffs is considered the final output.
-
-**Summary of the agent loop:**
-
-- If the current agent has an `outputType`, the loop runs until structured output of that type is produced.
-- If not, the loop runs until a message is produced with no tool calls or handoffs.
-
-### Error handling
-
-- If the maximum number of turns is exceeded, a `MaxTurnsExceededError` is thrown.
-- If a guardrail is triggered, a `GuardrailTripwireTriggered` exception is raised.
+### Healthcare Workflow Optimization
+```yaml
+name: "Clinical Decision Support"
+objective: "AI-assisted clinical workflows with HIPAA compliance"
+key_requirements:
+  - "Patient data privacy protection"
+  - "Evidence-based recommendation engine"
+  - "Integration with EHR systems"
+  - "Clinical outcome tracking"
+```
 
 ## Documentation
 
-To view the documentation locally:
-
-```bash
-pnpm docs:dev
-```
-
-Then visit [http://localhost:4321](http://localhost:4321) in your browser.
+- **[Architecture Guide](ARCHITECTURE.md)** - Complete system design and patterns
+- **[Getting Started](docs/getting-started.md)** - Step-by-step tutorials
+- **[API Reference](docs/api/)** - Full API documentation
+- **[Deployment Guide](DEPLOYMENT_GUIDE.md)** - Production deployment procedures
+- **[Operations Runbook](Data_Correction_Runbook.md)** - Incident response procedures
 
 ## Development
 
-If you want to contribute or edit the SDK/examples:
+### Prerequisites
+- Node.js 22+
+- pnpm (recommended) or npm
+- OpenAI API key
+- Pinecone API key (for vector features)
 
-1. Install dependencies
+### Setup
+```bash
+pnpm install
+cp .env.example .env
+pnpm build
+pnpm test
+```
 
-   ```bash
-   pnpm install
-   ```
+### Key Scripts
+```bash
+# Development
+pnpm dev                    # Start development server
+pnpm build                  # Build for production
+pnpm test                   # Run test suite
+pnpm test:integration       # Run integration tests
 
-2. Build the project
+# Orchestration
+pnpm orchestrator           # CLI for contract orchestration
+pnpm orchestrator:validate  # Validate contracts
+pnpm orchestrator:execute   # Execute contract workflows
 
-   ```bash
-   pnpm build && pnpm -r build-check
-   ```
+# Monitoring
+pnpm dashboard              # Start monitoring dashboard
+pnpm knowledge:health-check # Check system health
+```
 
-3. Run tests and linter
+## Contributing
 
-   ```bash
-   pnpm test && pnpm lint
-   ```
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-See `AGENTS.md` and `CONTRIBUTING.md` for the full contributor guide.
+### Development Workflow
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Add tests for new functionality
+5. Ensure all tests pass (`pnpm test`)
+6. Submit a pull request
 
-## Acknowledgements
+### Code Standards
+- TypeScript strict mode enabled
+- Comprehensive test coverage (>80%)
+- Commit messages follow conventional format
+- All PRs require review and CI passing
 
-We'd like to acknowledge the excellent work of the open-source community, especially:
+## Security & Compliance
 
-- [zod](https://github.com/colinhacks/zod) (schema validation)
-- [Starlight](https://github.com/withastro/starlight)
-- [vite](https://github.com/vitejs/vite) and [vitest](https://github.com/vitest-dev/vitest)
-- [pnpm](https://pnpm.io/)
-- [Next.js](https://github.com/vercel/next.js)
+- **Policy Engine**: Automated governance prevents unauthorized actions
+- **Audit Trails**: Complete traceability of all decisions
+- **Data Encryption**: End-to-end encryption for sensitive data
+- **Compliance**: SOC2, GDPR, HIPAA support (domain-specific)
+- **Access Control**: Role-based permissions and approval workflows
 
-We're committed to building the Agents SDK as an open source framework so others in the community can expand on our approach.
+## Performance & Scaling
 
-For more details, see the [documentation](https://openai.github.io/openai-agents-js) or explore the [`examples/`](examples/) directory.
+- **Parallel Execution**: Concurrent LLM calls with optimization
+- **Caching**: Intelligent response caching and reuse
+- **Load Balancing**: Distributed agent execution
+- **Monitoring**: Real-time performance metrics and alerting
+- **Auto-scaling**: Kubernetes-native horizontal scaling
+
+## Roadmap
+
+### Q1 2025
+- Healthcare agent with HIPAA compliance
+- Multi-language contract support
+- Advanced dependency resolution
+
+### Q2 2025
+- Enterprise SSO integration
+- Custom policy rule engine
+- Real-time collaboration features
+
+### Q3 2025
+- Quantum computing integration
+- Advanced self-evolution
+- Third-party agent marketplace
+
+## Community
+
+- **GitHub Issues**: Bug reports and feature requests
+- **Discussions**: General questions and community support
+- **Discord**: Real-time chat and collaboration
+- **Newsletter**: Monthly updates and best practices
+
+## License
+
+MIT License - see [LICENSE](LICENSE) for details.
+
+## Acknowledgments
+
+Built on the shoulders of giants:
+- [OpenAI Agents SDK](https://github.com/openai/openai-agents-js) - Foundation framework
+- [Pinecone](https://www.pinecone.io/) - Vector database for contract storage
+- [Zod](https://github.com/colinhacks/zod) - Schema validation
+- [Node.js](https://nodejs.org/) - Runtime platform
+
+---
+
+**Ready to stop fighting prompts and start building with contracts?**
+
+[Get Started](docs/getting-started.md) | [Architecture](ARCHITECTURE.md) | [API Docs](docs/api/) | [Community](https://github.com/yourorg/contract-ai-platform/discussions)

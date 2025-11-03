@@ -1,137 +1,258 @@
-# Contributing to OpenAI Agents SDK
+# Contributing to Contract-Driven AI Platform
 
-Thank you for your interest in contributing to the OpenAI Agents SDK. This document outlines the process for reporting issues, proposing changes, and submitting pull requests.
+Thank you for your interest in contributing to the Contract-Driven AI Platform! This document provides guidelines and information for contributors.
 
-## Repository structure
+## Code of Conduct
 
-This repository is a pnpm-managed monorepo that contains several packages:
+This project follows a code of conduct to ensure a welcoming environment for all contributors. By participating, you agree to:
 
-- `packages/agents-core`: Core abstractions and runtime for building agent workflows.
-- `packages/agents-openai`: OpenAI SDK bindings and concrete implementations.
-- `packages/agents`: Convenience bundle that re-exports core and OpenAI packages.
-- `packages/agents-realtime`: Realtime bindings and implementations.
-- `packages/agents-extensions`: Extensions for additional workflows.
+- Be respectful and inclusive
+- Focus on constructive feedback
+- Accept responsibility for mistakes
+- Show empathy towards other contributors
+- Help create a positive community
 
-Other important directories:
-
-- `docs/`: Documentation site (Astro).
-- `examples/`: Example projects demonstrating basic usage.
-- `scripts/`: Automation scripts (e.g. embedding metadata).
-- `helpers/`: Shared utilities used across tests and examples.
-
-## Getting started
+## Getting Started
 
 ### Prerequisites
+- Node.js 22+
+- pnpm (recommended) or npm
+- Git
+- OpenAI API key (for testing)
 
-- Node.js 22 or later
-- pnpm 10 or later
-
-### Setup
-
+### Development Setup
 ```bash
-# Clone the repository
-git clone https://github.com/openai/openai-agents-js.git
-cd openai-agents-js
+# Fork and clone the repository
+git clone https://github.com/your-org/contract-ai-platform.git
+cd contract-ai-platform
 
 # Install dependencies
 pnpm install
 
-# Build all packages
+# Set up environment
+cp .env.example .env
+# Edit .env with your API keys
+
+# Build the project
 pnpm build
-# Check that all packages compile
-pnpm -r build-check
 
 # Run tests
 pnpm test
 ```
 
-Optionally, you can run the example app or docs site:
+## Development Workflow
 
-- `pnpm examples:basic` to start the basic example
-- `pnpm docs:dev` to serve the documentation locally
+### 1. Choose an Issue
+- Check [GitHub Issues](https://github.com/your-org/contract-ai-platform/issues) for open tasks
+- Look for issues labeled `good first issue` or `help wanted`
+- Comment on the issue to indicate you're working on it
 
-## Development workflow
-
-### Building
-
-After making code changes, run:
-
+### 2. Create a Branch
 ```bash
-pnpm build
+# Create and switch to a feature branch
+git checkout -b feature/your-feature-name
+
+# Or for bug fixes
+git checkout -b fix/issue-number-description
 ```
 
-This compiles TypeScript into `dist/` directories for each package.
+### 3. Make Changes
+- Follow the [coding standards](#coding-standards)
+- Write tests for new functionality
+- Update documentation as needed
+- Ensure all tests pass
+
+### 4. Commit Changes
+```bash
+# Stage your changes
+git add .
+
+# Commit with conventional format
+git commit -m "feat: add new agent capability
+
+- Add capability declaration interface
+- Implement validation logic
+- Add comprehensive tests
+- Update documentation"
+```
+
+### 5. Push and Create PR
+```bash
+# Push your branch
+git push origin feature/your-feature-name
+
+# Create a Pull Request on GitHub
+```
+
+## Coding Standards
+
+### TypeScript
+- Use TypeScript strict mode
+- Prefer interfaces over types for public APIs
+- Use meaningful variable and function names
+- Add JSDoc comments for public APIs
+
+### Code Style
+- 2-space indentation
+- Semicolons required
+- Single quotes for strings
+- Trailing commas in multi-line structures
 
 ### Testing
+- Write unit tests for all new functionality
+- Aim for >80% code coverage
+- Use descriptive test names
+- Test both success and error cases
 
-Run the full test suite with:
+### Commit Messages
+Follow conventional commit format:
+```
+type(scope): description
 
-```bash
-CI=1 pnpm test
+[optional body]
+
+[optional footer]
 ```
 
-Tests use Vitest and are located alongside source files in each package under `packages/*/test`.
+Types:
+- `feat`: New features
+- `fix`: Bug fixes
+- `docs`: Documentation changes
+- `style`: Code style changes
+- `refactor`: Code refactoring
+- `test`: Test additions/changes
+- `chore`: Maintenance tasks
 
-### Code style
+## Architecture Guidelines
 
-- Maintain existing TypeScript style.
-- Ensure that `pnpm build` completes without errors.
-- Run `pnpm lint` to check formatting and unused imports.
+### Contract Design
+- Contracts must be machine-readable and validated
+- Include comprehensive governance rules
+- Define clear success criteria
+- Support dependency management
 
-## Changesets and versioning
+### Agent Development
+- Implement the `DomainAgent` interface
+- Declare capabilities accurately
+- Handle errors gracefully
+- Provide meaningful confidence scores
 
-This repository uses [Changesets](https://github.com/changesets/changesets) for version management and changelog generation.
-If your changes affect the public API or introduce user-visible changes (bug fixes, new features, or breaking changes), create a changeset:
+### Policy Engine
+- Policies should be clear and enforceable
+- Include severity levels for violations
+- Support audit logging
+- Allow for policy evolution
 
-```bash
-pnpm changeset
+## Testing
+
+### Unit Tests
+```typescript
+import { describe, it, expect } from 'vitest';
+import { PolicyEngine } from '../src/policy-engine';
+
+describe('PolicyEngine', () => {
+  it('should approve valid contracts', () => {
+    const engine = new PolicyEngine();
+    const result = engine.evaluateContract(validContract);
+    expect(result.approved).toBe(true);
+  });
+});
 ```
 
-Follow the interactive prompts. Do not manually bump package versions.
+### Integration Tests
+- Test end-to-end contract orchestration
+- Verify agent interactions
+- Test policy enforcement
+- Validate audit logging
 
-## Reporting issues
+### Performance Tests
+- Measure response times
+- Test concurrent contract processing
+- Monitor resource usage
+- Validate scalability
 
-Before opening a new issue, search existing issues to avoid duplicates.
-When opening an issue, include:
+## Documentation
 
-- A clear and descriptive title
-- A short summary of the problem or feature request
-- Steps to reproduce (for bugs)
-- A minimal code snippet or example (if applicable)
-- Expected and actual behavior
+### Code Documentation
+- Add JSDoc comments to public functions
+- Document complex algorithms
+- Explain design decisions
+- Provide usage examples
 
-## Submitting a pull request
+### User Documentation
+- Update guides for new features
+- Add examples and tutorials
+- Maintain API reference documentation
+- Keep architecture docs current
 
-1. Fork the repository and create a branch with a descriptive name (e.g., `fix/missing-error`, `feat/new-tool`).
-2. Ensure your branch is up to date with `main`.
-3. Make your changes, add or update tests, and ensure that:
-   ```bash
-   pnpm build && pnpm test && pnpm lint
-   ```
-4. If applicable, generate a changeset (`pnpm changeset`).
-5. Make sure you have [Trufflehog](https://github.com/trufflesecurity/trufflehog) installed to ensure no secrets are accidentally committed.
-6. Commit your changes using Conventional Commits (e.g., `feat:`, `fix:`, `docs:`).
-7. Push your branch to your fork and open a pull request against the `main` branch.
-8. In the pull request description, link any related issues and summarize your changes.
+## Pull Request Process
 
-### Review process
+### Before Submitting
+- [ ] All tests pass
+- [ ] Code follows style guidelines
+- [ ] Documentation updated
+- [ ] Commit messages are clear
+- [ ] Branch is up to date with main
 
-- All pull requests require at least one approving review from a maintainer.
-- Automated checks (build, test, docs) must pass before merging.
-- We use squash merging; each pull request results in a single commit on `main`.
+### PR Description
+Include:
+- Clear description of changes
+- Rationale for the changes
+- Impact on existing functionality
+- Testing instructions
+- Screenshots for UI changes
 
-## Releasing
+### Review Process
+1. Automated checks run (tests, linting, type checking)
+2. Code review by maintainers
+3. Discussion and feedback
+4. Approval and merge
+5. Branch cleanup
 
-Releasing happens automatically. After every push to `main` the CI will run. After it passed,
-the Changeset Action will check if there are any open changeset entries and add them to either an
-open version bump PR or create a new one.
+## Areas for Contribution
 
-For a maintainer to release a new version, the PR from Changeset has to be merged.
+### High Priority
+- **New Domain Agents**: Healthcare, finance, e-commerce
+- **Performance Optimization**: Caching, parallel processing
+- **Security Enhancements**: Input validation, audit logging
+- **Documentation**: Tutorials, API references, examples
 
-## License and code of conduct
+### Medium Priority
+- **UI/UX Improvements**: Dashboard enhancements
+- **Integration**: Third-party service connectors
+- **Monitoring**: Advanced metrics and alerting
+- **Testing**: Additional test coverage, integration tests
 
-By contributing, you agree that your contributions will be licensed under the project’s MIT license.
+### Future Opportunities
+- **Multi-language Support**: Contracts in other languages
+- **Advanced AI**: Quantum computing, advanced ML models
+- **Enterprise Features**: SSO, advanced compliance
+- **Mobile SDK**: React Native, Flutter support
 
-## Questions
+## Getting Help
 
-If you have any questions or need guidance, feel free to open an issue or ask in a pull request. Maintainers are happy to help.
+### Communication Channels
+- **GitHub Issues**: Bug reports and feature requests
+- **Discussions**: General questions and community support
+- **Discord**: Real-time chat (if available)
+
+### Finding Mentorship
+- Look for issues labeled `mentorship`
+- Ask questions in GitHub Discussions
+- Attend community meetings (if scheduled)
+
+## Recognition
+
+Contributors are recognized through:
+- GitHub contributor statistics
+- Mention in release notes
+- Attribution in documentation
+- Community acknowledgments
+
+## License
+
+By contributing to this project, you agree that your contributions will be licensed under the same MIT License that covers the project.
+
+---
+
+Thank you for contributing to the Contract-Driven AI Platform! Your efforts help build the future of reliable, governable AI systems.

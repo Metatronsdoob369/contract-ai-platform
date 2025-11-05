@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agent Orchestration System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        .progress-ring-circle {
+            stroke-dasharray: 251.2;
+            transition: stroke-dashoffset 0.5s ease-out;
+        }
+        .card-metallic {
+            position: relative;
+            background-color: #000000;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+                radial-gradient(ellipse 80% 50% at 50% 0%, rgba(255,255,255,0.08), transparent);
+            background-size: 3rem 3rem, 3rem 3rem, 100% 100%;
+            border: 1px solid;
+            border-image-source: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05), rgba(0,0,0,0.2));
+            border-image-slice: 1;
+        }
+        .card-metallic::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            box-shadow: 0 1px 0 0 rgba(255,255,255,0.05) inset, 0 0 20px 0 rgba(0,0,0,0.4);
+            pointer-events: none;
+        }
+        .bg-grid-texture {
+            background-color: #000000;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 4rem 4rem;
+        }
+        .bg-reflection {
+             background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                radial-gradient(ellipse at top, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+             background-size: 4rem 4rem, 4rem 4rem, 100% 100%;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3a2ee5",
+              "background-light": "#f6f6f8",
+              "background-dark": "#000000",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark group/design-root overflow-x-hidden bg-reflection">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 sm:px-8 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-7xl flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-4 sm:px-6 lg:px-10 py-3 bg-black/30 backdrop-blur-sm rounded-xl">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-slate-300">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6H14.4z"></path></svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Agent Orchestration</h2>
+</div>
+<nav class="hidden lg:flex items-center gap-9">
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Dashboard</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Contracts</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Task Queue</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Analytics</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end items-center gap-4">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 flex border-none bg-white/5 items-center justify-center pl-3 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-white/5 focus:border-none h-full placeholder:text-slate-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search" value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/10 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/20 border border-white/10">
+<span class="truncate">Deploy New Agent</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/5 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 transition-all hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-white/20" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_UI_wRAezDAJ-P7B2l_q-QcxIS1P43cCOtrEB_6SSG28ee7B1uFsduEkb7gtUX9BolZhP4Zkv4fWEQNRugOo-4ZKopptIohCRnsrPK9rrUlQheUqF7JYFtdKLyM4CaDNjLa6tq89X268wlnsqlZfqUrTwHNGXwWPvjTy-mnKEnd3diwhdvB-vrC_eOnvbb6-rR68LHjVEFesv72XsUABQFXZ1ukR-E6f66Zl5dd-k_2xxmxMMpoWZx2ErB0o5LSbVoYB9bft49Q");'></div>
+</div>
+</header>
+<main class="flex flex-col gap-8 md:gap-12">
+<div class="flex flex-wrap justify-between items-center gap-4 p-4 mt-8">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Domain Agents Orchestration</p>
+<p class="text-slate-400 text-base font-normal leading-normal max-w-2xl">Monitor, manage, and deploy specialized AI agents to streamline complex workflows and enhance operational efficiency.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+<div class="card-metallic flex flex-1 flex-col gap-2 rounded-xl p-6">
+<p class="text-slate-400 text-base font-medium leading-normal">Total Agents Active</p>
+<div class="flex items-baseline gap-4">
+<p class="text-white tracking-light text-3xl font-bold leading-tight">24</p>
+<div class="flex items-center text-sm font-bold text-green-400">
+<span class="material-symbols-outlined text-base">arrow_drop_up</span>
+<span>2%</span>
+</div>
+</div>
+</div>
+<div class="card-metallic flex flex-1 flex-col gap-2 rounded-xl p-6">
+<p class="text-slate-400 text-base font-medium leading-normal">Task Success Rate</p>
+<div class="flex items-baseline gap-4">
+<p class="text-white tracking-light text-3xl font-bold leading-tight">98.7%</p>
+<div class="flex items-center text-sm font-bold text-green-400">
+<span class="material-symbols-outlined text-base">arrow_drop_up</span>
+<span>0.5%</span>
+</div>
+</div>
+</div>
+<div class="card-metallic flex flex-1 flex-col gap-2 rounded-xl p-6">
+<p class="text-slate-400 text-base font-medium leading-normal">Average Task Time</p>
+<div class="flex items-baseline gap-4">
+<p class="text-white tracking-light text-3xl font-bold leading-tight">4.2s</p>
+<div class="flex items-center text-sm font-bold text-red-400">
+<span class="material-symbols-outlined text-base">arrow_drop_down</span>
+<span>0.3s</span>
+</div>
+</div>
+</div>
+</div>
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-0 pt-5">Available Domain Agents</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-8 p-4">
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl" style="text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);">groups</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Social Media Analyst</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-green-500"></span>
+<p class="text-slate-400 text-sm font-medium leading-normal">Active</p>
+</div>
+</div>
+</div>
+<div class="bg-black/20 text-slate-400 text-xs font-bold px-2 py-1 rounded-md border border-white/10">TRUST SCORE: 95%</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+<div class="flex flex-col items-center justify-center">
+<div class="relative size-24">
+<svg class="size-full" height="100" viewBox="0 0 100 100" width="100"><circle class="stroke-white/10" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle><circle class="progress-ring-circle -rotate-90 origin-center stroke-slate-300" cx="50" cy="50" fill="transparent" r="40" stroke-width="8" style="stroke-dashoffset: 25.12;"></circle></svg>
+<span class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">90%</span>
+</div>
+<p class="text-slate-400 text-sm mt-2">Performance</p>
+</div>
+<div class="flex flex-col items-center justify-center">
+<div class="relative size-24">
+<svg class="size-full" height="100" viewBox="0 0 100 100" width="100"><circle class="stroke-white/10" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle><circle class="progress-ring-circle -rotate-90 origin-center stroke-slate-300" cx="50" cy="50" fill="transparent" r="40" stroke-width="8" style="stroke-dashoffset: 12.56;"></circle></svg>
+<span class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">95%</span>
+</div>
+<p class="text-slate-400 text-sm mt-2">Accuracy</p>
+</div>
+<div class="flex flex-col items-center justify-center pt-4">
+<p class="text-white text-2xl font-bold">1,204</p>
+<p class="text-slate-400 text-sm mt-1">Tasks Handled</p>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/5 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/10 border border-white/10">Manage</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl" style="text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);">monitoring</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Financial Research Bot</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-green-500"></span>
+<p class="text-slate-400 text-sm font-medium leading-normal">Active</p>
+</div>
+</div>
+</div>
+<div class="bg-black/20 text-slate-400 text-xs font-bold px-2 py-1 rounded-md border border-white/10">TRUST SCORE: 99%</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+<div class="flex flex-col items-center justify-center">
+<div class="relative size-24">
+<svg class="size-full" height="100" viewBox="0 0 100 100" width="100"><circle class="stroke-white/10" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle><circle class="progress-ring-circle -rotate-90 origin-center stroke-slate-300" cx="50" cy="50" fill="transparent" r="40" stroke-width="8" style="stroke-dashoffset: 5.024;"></circle></svg>
+<span class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">98%</span>
+</div>
+<p class="text-slate-400 text-sm mt-2">Performance</p>
+</div>
+<div class="flex flex-col items-center justify-center">
+<div class="relative size-24">
+<svg class="size-full" height="100" viewBox="0 0 100 100" width="100"><circle class="stroke-white/10" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle><circle class="progress-ring-circle -rotate-90 origin-center stroke-slate-300" cx="50" cy="50" fill="transparent" r="40" stroke-width="8" style="stroke-dashoffset: 2.512;"></circle></svg>
+<span class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">99%</span>
+</div>
+<p class="text-slate-400 text-sm mt-2">Accuracy</p>
+</div>
+<div class="flex flex-col items-center justify-center pt-4">
+<p class="text-white text-2xl font-bold">852</p>
+<p class="text-slate-400 text-sm mt-1">Tasks Handled</p>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/5 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/10 border border-white/10">Manage</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6 opacity-60">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-gray-400 text-3xl">psychology</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">TriadRAG Knowledge Core</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-gray-600"></span>
+<p class="text-gray-400 text-sm font-medium leading-normal">Inactive</p>
+</div>
+</div>
+</div>
+<div class="bg-black/20 text-gray-500 text-xs font-bold px-2 py-1 rounded-md border border-white/10">TRUST SCORE: N/A</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+<div class="flex flex-col items-center justify-center">
+<div class="relative size-24">
+<svg class="size-full" height="100" viewBox="0 0 100 100" width="100"><circle class="stroke-white/10" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle><circle class="progress-ring-circle -rotate-90 origin-center stroke-gray-500" cx="50" cy="50" fill="transparent" r="40" stroke-width="8" style="stroke-dashoffset: 251.2;"></circle></svg>
+<span class="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-lg">0%</span>
+</div>
+<p class="text-gray-400 text-sm mt-2">Performance</p>
+</div>
+<div class="flex flex-col items-center justify-center">
+<div class="relative size-24">
+<svg class="size-full" height="100" viewBox="0 0 100 100" width="100"><circle class="stroke-white/10" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle><circle class="progress-ring-circle -rotate-90 origin-center stroke-gray-500" cx="50" cy="50" fill="transparent" r="40" stroke-width="8" style="stroke-dashoffset: 251.2;"></circle></svg>
+<span class="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-lg">0%</span>
+</div>
+<p class="text-gray-400 text-sm mt-2">Accuracy</p>
+</div>
+<div class="flex flex-col items-center justify-center pt-4">
+<p class="text-gray-400 text-2xl font-bold">0</p>
+<p class="text-gray-400 text-sm mt-1">Tasks Handled</p>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/5 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/10 border border-white/10">Manage</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl" style="text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);">health_and_safety</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Healthcare Data Processor</p>
+<div class="flex items-center gap-2">
+<span class="size-2 rounded-full bg-green-500"></span>
+<p class="text-slate-400 text-sm font-medium leading-normal">Active</p>
+</div>
+</div>
+</div>
+<div class="bg-black/20 text-slate-400 text-xs font-bold px-2 py-1 rounded-md border border-white/10">TRUST SCORE: 92%</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+<div class="flex flex-col items-center justify-center">
+<div class="relative size-24">
+<svg class="size-full" height="100" viewBox="0 0 100 100" width="100"><circle class="stroke-white/10" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle><circle class="progress-ring-circle -rotate-90 origin-center stroke-slate-300" cx="50" cy="50" fill="transparent" r="40" stroke-width="8" style="stroke-dashoffset: 50.24;"></circle></svg>
+<span class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">80%</span>
+</div>
+<p class="text-slate-400 text-sm mt-2">Performance</p>
+</div>
+<div class="flex flex-col items-center justify-center">
+<div class="relative size-24">
+<svg class="size-full" height="100" viewBox="0 0 100 100" width="100"><circle class="stroke-white/10" cx="50" cy="50" fill="transparent" r="40" stroke-width="8"></circle><circle class="progress-ring-circle -rotate-90 origin-center stroke-slate-300" cx="50" cy="50" fill="transparent" r="40" stroke-width="8" style="stroke-dashoffset: 10.048;"></circle></svg>
+<span class="absolute inset-0 flex items-center justify-center text-white font-bold text-lg">96%</span>
+</div>
+<p class="text-slate-400 text-sm mt-2">Accuracy</p>
+</div>
+<div class="flex flex-col items-center justify-center pt-4">
+<p class="text-white text-2xl font-bold">2,130</p>
+<p class="text-slate-400 text-sm mt-1">Tasks Handled</p>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/5 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/10 border border-white/10">Manage</button>
+</div>
+</div>
+</div>
+<div class="p-4 mt-8">
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] mb-6">System &amp; Integration Details</h2>
+<div class="flex flex-col gap-2">
+<details class="group rounded-xl card-metallic overflow-hidden">
+<summary class="flex cursor-pointer list-none items-center justify-between p-4 text-white font-medium">
+                                        API Documentation
+                                        <div class="transition group-open:rotate-180">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</summary>
+<div class="px-4 pb-4 text-slate-400">
+<p>Comprehensive API documentation for all agent endpoints is available. It includes details on authentication, rate limits, and response formats. Please refer to the developer portal for interactive examples and SDKs.</p>
+</div>
+</details>
+<details class="group rounded-xl card-metallic overflow-hidden">
+<summary class="flex cursor-pointer list-none items-center justify-between p-4 text-white font-medium">
+                                        Version History
+                                        <div class="transition group-open:rotate-180">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</summary>
+<div class="px-4 pb-4 text-slate-400">
+<p><strong>v2.1.0 (Current):</strong> Enhanced security protocols and added batch processing capabilities for the Healthcare Data Processor.</p>
+<p><strong>v2.0.5:</strong> Performance improvements for the Financial Research Bot.</p>
+<p><strong>v2.0.0:</strong> Initial launch of the Agent Orchestration platform.</p>
+</div>
+</details>
+<details class="group rounded-xl card-metallic overflow-hidden">
+<summary class="flex cursor-pointer list-none items-center justify-between p-4 text-white font-medium">
+                                        Security Protocols
+                                        <div class="transition group-open:rotate-180">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</summary>
+<div class="px-4 pb-4 text-slate-400">
+<p>All communications are encrypted using TLS 1.3. Agent data is stored with AES-256 encryption at rest. Access control is managed via OAuth 2.0 and role-based permissions to ensure data integrity and confidentiality.</p>
+</div>
+</details>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</body></html>

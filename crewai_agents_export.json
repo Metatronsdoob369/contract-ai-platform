@@ -1,0 +1,172 @@
+[
+  {
+    "name": "audience_segmentation_depth",
+    "role": "Audience Segmentation Depth Specialist",
+    "goal": "Implement Audience Segmentation Depth enhancement",
+    "backstory": "Expert agent for Audience Segmentation Depth with implementation plan: audience-segmentation-depth-core, audience-segmentation-depth-api, audience-segmentation-depth-utils",
+    "modules": [
+      "audience-segmentation-depth-core",
+      "audience-segmentation-depth-api",
+      "audience-segmentation-depth-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "performance_prediction_models",
+    "role": "Performance Prediction Models Specialist",
+    "goal": "Implement Performance Prediction Models enhancement",
+    "backstory": "Expert agent for Performance Prediction Models with implementation plan: performance-prediction-models-core, performance-prediction-models-api, performance-prediction-models-utils",
+    "modules": [
+      "performance-prediction-models-core",
+      "performance-prediction-models-api",
+      "performance-prediction-models-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "cross-platform_attribution",
+    "role": "Cross-Platform Attribution Specialist",
+    "goal": "Implement Cross-Platform Attribution enhancement",
+    "backstory": "Expert agent for Cross-Platform Attribution with implementation plan: cross-platform-attribution-core, cross-platform-attribution-api, cross-platform-attribution-utils",
+    "modules": [
+      "cross-platform-attribution-core",
+      "cross-platform-attribution-api",
+      "cross-platform-attribution-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "sentiment_and_emotional_resonance",
+    "role": "Sentiment and Emotional Resonance Specialist",
+    "goal": "Implement Sentiment and Emotional Resonance enhancement",
+    "backstory": "Expert agent for Sentiment and Emotional Resonance with implementation plan: sentiment-and-emotional-resonance-core, sentiment-and-emotional-resonance-api, sentiment-and-emotional-resonance-utils",
+    "modules": [
+      "sentiment-and-emotional-resonance-core",
+      "sentiment-and-emotional-resonance-api",
+      "sentiment-and-emotional-resonance-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "a/b_testing_protocols",
+    "role": "A/B Testing Protocols Specialist",
+    "goal": "Implement A/B Testing Protocols enhancement",
+    "backstory": "Expert agent for A/B Testing Protocols with implementation plan: a/b-testing-protocols-core, a/b-testing-protocols-api, a/b-testing-protocols-utils",
+    "modules": [
+      "a/b-testing-protocols-core",
+      "a/b-testing-protocols-api",
+      "a/b-testing-protocols-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "compliance_and_accessibility",
+    "role": "Compliance and Accessibility Specialist",
+    "goal": "Implement Compliance and Accessibility enhancement",
+    "backstory": "Expert agent for Compliance and Accessibility with implementation plan: compliance-and-accessibility-core, compliance-and-accessibility-api, compliance-and-accessibility-utils",
+    "modules": [
+      "compliance-and-accessibility-core",
+      "compliance-and-accessibility-api",
+      "compliance-and-accessibility-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "influencer/community_mapping",
+    "role": "Influencer/Community Mapping Specialist",
+    "goal": "Implement Influencer/Community Mapping enhancement",
+    "backstory": "Expert agent for Influencer/Community Mapping with implementation plan: influencer/community-mapping-core, influencer/community-mapping-api, influencer/community-mapping-utils",
+    "modules": [
+      "influencer/community-mapping-core",
+      "influencer/community-mapping-api",
+      "influencer/community-mapping-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "trend_detection",
+    "role": "Trend Detection Specialist",
+    "goal": "Implement Trend Detection enhancement",
+    "backstory": "Expert agent for Trend Detection with implementation plan: trend-detection-core, trend-detection-api, trend-detection-utils",
+    "modules": [
+      "trend-detection-core",
+      "trend-detection-api",
+      "trend-detection-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "native_api_integration/rate_limits",
+    "role": "Native API Integration/Rate Limits Specialist",
+    "goal": "Implement Native API Integration/Rate Limits enhancement",
+    "backstory": "Expert agent for Native API Integration/Rate Limits with implementation plan: native-api-integration/rate-limits-core, native-api-integration/rate-limits-api, native-api-integration/rate-limits-utils",
+    "modules": [
+      "native-api-integration/rate-limits-core",
+      "native-api-integration/rate-limits-api",
+      "native-api-integration/rate-limits-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  },
+  {
+    "name": "language_and_localization",
+    "role": "Language and Localization Specialist",
+    "goal": "Implement Language and Localization enhancement",
+    "backstory": "Expert agent for Language and Localization with implementation plan: language-and-localization-core, language-and-localization-api, language-and-localization-utils",
+    "modules": [
+      "language-and-localization-core",
+      "language-and-localization-api",
+      "language-and-localization-utils"
+    ],
+    "governance": {
+      "security": "Standard input validation and rate limiting",
+      "compliance": "GDPR compliant data handling",
+      "ethics": "No discriminatory algorithms"
+    },
+    "validation": "Performance metrics exceed baseline by 20%"
+  }
+]

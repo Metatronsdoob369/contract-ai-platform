@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agent Orchestration System - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        .card-metallic {
+            position: relative;
+            background-image:
+                linear-gradient(165deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 40%),
+                radial-gradient(ellipse 100% 70% at 0% 0%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 50%),
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-color: #0A0A0A;
+            background-size: 100% 100%, 100% 100%, 2rem 2rem, 2rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s ease-in-out;
+        }
+        .card-metallic:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.6);
+        }
+        .bg-reflection {
+             background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                radial-gradient(ellipse at top, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+             background-size: 4rem 4rem, 4rem 4rem, 100% 100%;
+        }
+        .progress-bar {
+            background-image: linear-gradient(90deg, #4A5568, #A0AEC0);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3a2ee5",
+              "background-light": "#f6f6f8",
+              "background-dark": "#000000",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark group/design-root overflow-x-hidden bg-reflection">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 sm:px-8 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-7xl flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-4 sm:px-6 lg:px-10 py-3 bg-black/30 backdrop-blur-sm rounded-xl">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-slate-300">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6H14.4z"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Agent Orchestration</h2>
+</div>
+<nav class="hidden lg:flex items-center gap-9">
+<a class="text-white text-sm font-medium leading-normal" href="#">Dashboard</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Contracts</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Task Queue</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Analytics</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end items-center gap-4">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 flex border-none bg-white/5 items-center justify-center pl-3 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-white/5 focus:border-none h-full placeholder:text-slate-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search" value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/10 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/20 border border-white/10">
+<span class="truncate">Deploy Agent</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/5 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 transition-all hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-white/20" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_UI_wRAezDAJ-P7B2l_q-QcxIS1P43cCOtrEB_6SSG28ee7B1uFsduEkb7gtUX9BolZhP4Zkv4fWEQNRugOo-4ZKopptIohCRnsrPK9rrUlQheUqF7JYFtdKLyM4CaDNjLa6tq89X268wlnsqlZfqUrTwHNGXwWPvjTy-mnKEnd3diwhdvB-vrC_eOnvbb6-rR68LHjVEFesv72XsUABQFXZ1ukR-E6f66Zl5dd-k_2xxmxMMpoWZx2ErB0o5LSbVoYB9bft49Q");'></div>
+</div>
+</header>
+<main class="flex flex-col gap-8 md:gap-12 mt-8">
+<div class="flex flex-wrap justify-between items-center gap-4 px-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Contracts Dashboard</p>
+<p class="text-slate-400 text-base font-normal leading-normal max-w-2xl">Overview of all active and pending agent contracts. Track progress, manage assignments, and review performance metrics.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 min-w-[84px] cursor-pointer justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-medium leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+<span>Filter</span>
+</button>
+<button class="flex items-center gap-2 min-w-[84px] cursor-pointer justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/5 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>New Contract</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 p-4">
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl">monitoring</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Market Analysis Q3</p>
+<p class="text-slate-400 text-sm font-medium leading-normal">Assigned to: FinResearch Bot</p>
+</div>
+</div>
+<div class="bg-green-500/10 text-green-400 text-xs font-bold px-2 py-1 rounded-md border border-green-500/20">ACTIVE</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-slate-400 text-sm">Progress</span>
+<span class="text-white text-sm font-semibold">85%</span>
+</div>
+<div class="w-full bg-slate-700/50 rounded-full h-2">
+<div class="progress-bar rounded-full h-2" style="width: 85%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex flex-col">
+<span class="text-slate-400">Start Date</span>
+<span class="text-white font-medium">2023-07-01</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">End Date</span>
+<span class="text-white font-medium">2023-09-30</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Total Tasks</span>
+<span class="text-white font-medium">150</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Tasks Completed</span>
+<span class="text-white font-medium">128</span>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl">groups</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Social Sentiment Analysis</p>
+<p class="text-slate-400 text-sm font-medium leading-normal">Assigned to: SocMedia Analyst</p>
+</div>
+</div>
+<div class="bg-green-500/10 text-green-400 text-xs font-bold px-2 py-1 rounded-md border border-green-500/20">ACTIVE</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-slate-400 text-sm">Progress</span>
+<span class="text-white text-sm font-semibold">40%</span>
+</div>
+<div class="w-full bg-slate-700/50 rounded-full h-2">
+<div class="progress-bar rounded-full h-2" style="width: 40%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex flex-col">
+<span class="text-slate-400">Start Date</span>
+<span class="text-white font-medium">2023-08-15</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">End Date</span>
+<span class="text-white font-medium">2023-11-15</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Total Tasks</span>
+<span class="text-white font-medium">500</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Tasks Completed</span>
+<span class="text-white font-medium">200</span>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl">health_and_safety</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Patient Data Anonymization</p>
+<p class="text-slate-400 text-sm font-medium leading-normal">Assigned to: Healthcare AI</p>
+</div>
+</div>
+<div class="bg-slate-500/10 text-slate-400 text-xs font-bold px-2 py-1 rounded-md border border-slate-500/20">COMPLETED</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-slate-400 text-sm">Progress</span>
+<span class="text-white text-sm font-semibold">100%</span>
+</div>
+<div class="w-full bg-slate-700/50 rounded-full h-2">
+<div class="progress-bar rounded-full h-2" style="width: 100%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex flex-col">
+<span class="text-slate-400">Start Date</span>
+<span class="text-white font-medium">2023-06-01</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">End Date</span>
+<span class="text-white font-medium">2023-08-31</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Total Tasks</span>
+<span class="text-white font-medium">2500</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Tasks Completed</span>
+<span class="text-white font-medium">2500</span>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Report</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl">psychology</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Internal KB Indexing</p>
+<p class="text-slate-400 text-sm font-medium leading-normal">Assigned to: TriadRAG Core</p>
+</div>
+</div>
+<div class="bg-yellow-500/10 text-yellow-400 text-xs font-bold px-2 py-1 rounded-md border border-yellow-500/20">PENDING</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-slate-400 text-sm">Progress</span>
+<span class="text-white text-sm font-semibold">0%</span>
+</div>
+<div class="w-full bg-slate-700/50 rounded-full h-2">
+<div class="bg-slate-500 rounded-full h-2" style="width: 0%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex flex-col">
+<span class="text-slate-400">Start Date</span>
+<span class="text-white font-medium">2023-10-01</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">End Date</span>
+<span class="text-white font-medium">2023-12-31</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Total Tasks</span>
+<span class="text-white font-medium">10,000</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Tasks Completed</span>
+<span class="text-white font-medium">0</span>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+
+</body></html><!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agent Orchestration System - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        .card-metallic {
+            position: relative;
+            background-image:
+                linear-gradient(165deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 40%),
+                radial-gradient(ellipse 100% 70% at 0% 0%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 50%),
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-color: #0A0A0A;
+            background-size: 100% 100%, 100% 100%, 2rem 2rem, 2rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s ease-in-out;
+        }
+        .card-metallic:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.6);
+        }
+        .bg-reflection {
+             background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                radial-gradient(ellipse at top, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+             background-size: 4rem 4rem, 4rem 4rem, 100% 100%;
+        }
+        .progress-bar {
+            background-image: linear-gradient(90deg, #4A5568, #A0AEC0);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3a2ee5",
+              "background-light": "#f6f6f8",
+              "background-dark": "#000000",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark group/design-root overflow-x-hidden bg-reflection">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 sm:px-8 md:px-20 lg:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-7xl flex-1">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-white/10 px-4 sm:px-6 lg:px-10 py-3 bg-black/30 backdrop-blur-sm rounded-xl">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-6 text-slate-300">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6H14.4z"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">Agent Orchestration</h2>
+</div>
+<nav class="hidden lg:flex items-center gap-9">
+<a class="text-white text-sm font-medium leading-normal" href="#">Dashboard</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Contracts</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Task Queue</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Analytics</a>
+<a class="text-slate-300 text-sm font-medium leading-normal hover:text-white transition-colors" href="#">Settings</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end items-center gap-4">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-slate-400 flex border-none bg-white/5 items-center justify-center pl-3 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-white/5 focus:border-none h-full placeholder:text-slate-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Search" value=""/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/10 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/20 border border-white/10">
+<span class="truncate">Deploy Agent</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 bg-white/5 text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] min-w-0 px-2.5 transition-all hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-white/20" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_UI_wRAezDAJ-P7B2l_q-QcxIS1P43cCOtrEB_6SSG28ee7B1uFsduEkb7gtUX9BolZhP4Zkv4fWEQNRugOo-4ZKopptIohCRnsrPK9rrUlQheUqF7JYFtdKLyM4CaDNjLa6tq89X268wlnsqlZfqUrTwHNGXwWPvjTy-mnKEnd3diwhdvB-vrC_eOnvbb6-rR68LHjVEFesv72XsUABQFXZ1ukR-E6f66Zl5dd-k_2xxmxMMpoWZx2ErB0o5LSbVoYB9bft49Q");'></div>
+</div>
+</header>
+<main class="flex flex-col gap-8 md:gap-12 mt-8">
+<div class="flex flex-wrap justify-between items-center gap-4 px-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Contracts Dashboard</p>
+<p class="text-slate-400 text-base font-normal leading-normal max-w-2xl">Overview of all active and pending agent contracts. Track progress, manage assignments, and review performance metrics.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 min-w-[84px] cursor-pointer justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-medium leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+<span>Filter</span>
+</button>
+<button class="flex items-center gap-2 min-w-[84px] cursor-pointer justify-center overflow-hidden rounded-lg h-10 px-4 bg-white/5 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/10 border border-white/10">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>New Contract</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 p-4">
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl">monitoring</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Market Analysis Q3</p>
+<p class="text-slate-400 text-sm font-medium leading-normal">Assigned to: FinResearch Bot</p>
+</div>
+</div>
+<div class="bg-green-500/10 text-green-400 text-xs font-bold px-2 py-1 rounded-md border border-green-500/20">ACTIVE</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-slate-400 text-sm">Progress</span>
+<span class="text-white text-sm font-semibold">85%</span>
+</div>
+<div class="w-full bg-slate-700/50 rounded-full h-2">
+<div class="progress-bar rounded-full h-2" style="width: 85%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex flex-col">
+<span class="text-slate-400">Start Date</span>
+<span class="text-white font-medium">2023-07-01</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">End Date</span>
+<span class="text-white font-medium">2023-09-30</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Total Tasks</span>
+<span class="text-white font-medium">150</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Tasks Completed</span>
+<span class="text-white font-medium">128</span>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl">groups</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Social Sentiment Analysis</p>
+<p class="text-slate-400 text-sm font-medium leading-normal">Assigned to: SocMedia Analyst</p>
+</div>
+</div>
+<div class="bg-green-500/10 text-green-400 text-xs font-bold px-2 py-1 rounded-md border border-green-500/20">ACTIVE</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-slate-400 text-sm">Progress</span>
+<span class="text-white text-sm font-semibold">40%</span>
+</div>
+<div class="w-full bg-slate-700/50 rounded-full h-2">
+<div class="progress-bar rounded-full h-2" style="width: 40%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex flex-col">
+<span class="text-slate-400">Start Date</span>
+<span class="text-white font-medium">2023-08-15</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">End Date</span>
+<span class="text-white font-medium">2023-11-15</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Total Tasks</span>
+<span class="text-white font-medium">500</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Tasks Completed</span>
+<span class="text-white font-medium">200</span>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl">health_and_safety</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Patient Data Anonymization</p>
+<p class="text-slate-400 text-sm font-medium leading-normal">Assigned to: Healthcare AI</p>
+</div>
+</div>
+<div class="bg-slate-500/10 text-slate-400 text-xs font-bold px-2 py-1 rounded-md border border-slate-500/20">COMPLETED</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-slate-400 text-sm">Progress</span>
+<span class="text-white text-sm font-semibold">100%</span>
+</div>
+<div class="w-full bg-slate-700/50 rounded-full h-2">
+<div class="progress-bar rounded-full h-2" style="width: 100%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex flex-col">
+<span class="text-slate-400">Start Date</span>
+<span class="text-white font-medium">2023-06-01</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">End Date</span>
+<span class="text-white font-medium">2023-08-31</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Total Tasks</span>
+<span class="text-white font-medium">2500</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Tasks Completed</span>
+<span class="text-white font-medium">2500</span>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Report</button>
+</div>
+</div>
+<div class="card-metallic flex flex-col gap-6 rounded-xl p-6">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="size-12 rounded-lg bg-black/30 flex items-center justify-center border border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]">
+<span class="material-symbols-outlined text-white text-3xl">psychology</span>
+</div>
+<div>
+<p class="text-white text-lg font-bold leading-normal">Internal KB Indexing</p>
+<p class="text-slate-400 text-sm font-medium leading-normal">Assigned to: TriadRAG Core</p>
+</div>
+</div>
+<div class="bg-yellow-500/10 text-yellow-400 text-xs font-bold px-2 py-1 rounded-md border border-yellow-500/20">PENDING</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-slate-400 text-sm">Progress</span>
+<span class="text-white text-sm font-semibold">0%</span>
+</div>
+<div class="w-full bg-slate-700/50 rounded-full h-2">
+<div class="bg-slate-500 rounded-full h-2" style="width: 0%"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-sm">
+<div class="flex flex-col">
+<span class="text-slate-400">Start Date</span>
+<span class="text-white font-medium">2023-10-01</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">End Date</span>
+<span class="text-white font-medium">2023-12-31</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Total Tasks</span>
+<span class="text-white font-medium">10,000</span>
+</div>
+<div class="flex flex-col">
+<span class="text-slate-400">Tasks Completed</span>
+<span class="text-white font-medium">0</span>
+</div>
+</div>
+<div class="flex gap-3 pt-2">
+<button class="flex-1 flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-black/20 text-slate-300 text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-black/40 border border-white/10">View Details</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

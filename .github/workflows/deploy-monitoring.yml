@@ -1,0 +1,105 @@
+name: Deploy Monitoring Dashboard
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/monitoring-dashboard.ts'
+      - 'src/performance-optimizer.ts'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  deploy-monitoring:
+    name: Deploy Monitoring Dashboard
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build monitoring components
+      run: npm run build
+
+    - name: Run monitoring tests
+      run: npm run test:run -- --testPathPattern=monitoring
+
+    - name: Deploy monitoring dashboard
+      run: |
+        echo "🚀 Deploying monitoring dashboard..."
+
+        # Create deployment package
+        mkdir -p deploy-monitoring
+        cp -r dist/ deploy-monitoring/
+        cp package.json deploy-monitoring/
+        cp package-lock.json deploy-monitoring/
+
+        # Create Dockerfile for monitoring service
+        cat > deploy-monitoring/Dockerfile << EOF
+        FROM node:22-alpine
+
+        WORKDIR /app
+        COPY package*.json ./
+        RUN npm ci --only=production
+
+        COPY dist/ ./dist/
+
+        EXPOSE 3001
+        HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \\
+          CMD curl -f http://localhost:3001/health || exit 1
+
+        CMD ["node", "dist/monitoring-dashboard.js"]
+        EOF
+
+        # Build and push Docker image
+        echo "Building Docker image..."
+        # Add your Docker registry commands here
+        # docker build -t your-registry/monitoring-dashboard:$GITHUB_SHA deploy-monitoring/
+        # docker push your-registry/monitoring-dashboard:$GITHUB_SHA
+
+        echo "✅ Monitoring dashboard deployment package created"
+
+  update-monitoring-infrastructure:
+    name: Update Monitoring Infrastructure
+    runs-on: ubuntu-latest
+    needs: deploy-monitoring
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Checkout infrastructure code
+      uses: actions/checkout@v4
+      with:
+        repository: your-org/infrastructure  # Replace with your infra repo
+        path: infrastructure
+        token: ${{ secrets.INFRA_TOKEN }}
+
+    - name: Update monitoring service configuration
+      run: |
+        cd infrastructure
+
+        # Update monitoring service version/tag
+        sed -i "s|monitoring-dashboard:.*|monitoring-dashboard:$GITHUB_SHA|g" docker-compose.monitoring.yml
+
+        # Commit and push changes
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add docker-compose.monitoring.yml
+        git commit -m "Update monitoring dashboard to $GITHUB_SHA" || echo "No changes to commit"
+        git push
+
+    - name: Trigger infrastructure deployment
+      run: |
+        # Trigger your infrastructure deployment workflow
+        # This could be a webhook, API call, or another workflow dispatch
+        echo "🔄 Infrastructure deployment triggered"

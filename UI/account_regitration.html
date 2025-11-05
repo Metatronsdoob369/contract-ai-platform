@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agent Orchestration System - Registration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        .card-metallic {
+            position: relative;
+            background-image:
+                linear-gradient(165deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 40%),
+                radial-gradient(ellipse 100% 70% at 0% 0%, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 50%),
+                linear-gradient(rgba(255,255,255,0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.01) 1px, transparent 1px);
+            background-color: #0A0A0A;
+            background-size: 100% 100%, 100% 100%, 2rem 2rem, 2rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s ease-in-out;
+        }
+        .card-metallic:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0px 12px 32px rgba(0, 0, 0, 0.6);
+        }
+        .bg-reflection {
+             background-image:
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                radial-gradient(ellipse at top, rgba(255, 255, 255, 0.04) 0%, transparent 50%);
+             background-size: 4rem 4rem, 4rem 4rem, 100% 100%;
+        }
+        .plan-card-active {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.7), 0 0 20px rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3a2ee5",
+              "background-light": "#f6f6f8",
+              "background-dark": "#000000",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-dark group/design-root overflow-x-hidden bg-reflection">
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 sm:px-8 md:px-20 lg:px-40 flex flex-1 justify-center py-10 sm:py-20">
+<div class="layout-content-container flex flex-col w-full max-w-5xl flex-1 gap-12">
+<header class="flex flex-col items-center justify-center gap-4 text-center">
+<div class="flex items-center gap-4 text-white">
+<div class="size-10 text-slate-300">
+<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+<path d="M14.4,6L14,4H5v17h2v-7h5.6l0.4,2h7V6H14.4z"></path>
+</svg>
+</div>
+<h2 class="text-white text-2xl font-bold leading-tight tracking-[-0.015em]">Agent Orchestration System</h2>
+</div>
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em] md:text-5xl">Create Your Account</p>
+<p class="text-slate-400 text-base font-normal leading-normal max-w-2xl">Join the premier platform for autonomous agent management. Start by creating your account, setting up your organization, and choosing your plan.</p>
+</header>
+<main class="flex flex-col gap-10">
+<div class="relative flex flex-col items-center">
+<div aria-hidden="true" class="absolute top-1/2 left-0 w-full h-px bg-white/10"></div>
+<div class="relative flex justify-between w-full max-w-2xl">
+<div class="flex flex-col items-center gap-2 z-10">
+<div class="size-10 rounded-full bg-slate-200 border-2 border-background-dark flex items-center justify-center text-background-dark font-bold">1</div>
+<span class="text-white text-sm font-semibold">Account</span>
+</div>
+<div class="flex flex-col items-center gap-2 z-10">
+<div class="size-10 rounded-full bg-slate-700 border-2 border-background-dark flex items-center justify-center text-slate-300 font-bold">2</div>
+<span class="text-slate-400 text-sm font-medium">Organization</span>
+</div>
+<div class="flex flex-col items-center gap-2 z-10">
+<div class="size-10 rounded-full bg-slate-700 border-2 border-background-dark flex items-center justify-center text-slate-300 font-bold">3</div>
+<span class="text-slate-400 text-sm font-medium">Plan</span>
+</div>
+</div>
+</div>
+<div class="card-metallic rounded-xl">
+<div class="flex flex-col md:flex-row">
+<div class="w-full md:w-1/2 p-8 md:p-10 border-b md:border-b-0 md:border-r border-white/10">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-bold text-white">1. Create Account</h3>
+<p class="text-slate-400 text-sm">Start by creating your personal user account.</p>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex flex-col sm:flex-row gap-4">
+<div class="flex-1">
+<label class="text-slate-300 text-sm font-medium mb-1.5 block" for="first-name">First Name</label>
+<input class="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/20" id="first-name" placeholder="John" type="text"/>
+</div>
+<div class="flex-1">
+<label class="text-slate-300 text-sm font-medium mb-1.5 block" for="last-name">Last Name</label>
+<input class="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/20" id="last-name" placeholder="Doe" type="text"/>
+</div>
+</div>
+<div>
+<label class="text-slate-300 text-sm font-medium mb-1.5 block" for="email">Email Address</label>
+<input class="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/20" id="email" placeholder="you@company.com" type="email"/>
+</div>
+<div>
+<label class="text-slate-300 text-sm font-medium mb-1.5 block" for="password">Password</label>
+<input class="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/20" id="password" placeholder="••••••••" type="password"/>
+</div>
+<div class="pt-2">
+<button class="w-full flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-4 bg-white/5 text-white text-sm font-bold leading-normal tracking-[0.015em] transition-all hover:bg-white/10 border border-white/10">
+<span class="truncate">Create My Account</span>
+</button>
+</div>
+</div>
+<p class="text-slate-500 text-xs text-center">By creating an account, you agree to our <a class="underline hover:text-slate-300" href="#">Terms of Service</a>.</p>
+</div>
+</div>
+<div class="w-full md:w-1/2 p-8 md:p-10 opacity-40">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<h3 class="text-2xl font-bold text-white">2. Organization Setup</h3>
+<p class="text-slate-400 text-sm">Tell us about your company or team.</p>
+</div>
+<div class="flex flex-col gap-4">
+<div>
+<label class="text-slate-300 text-sm font-medium mb-1.5 block" for="org-name">Organization Name</label>
+<input class="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-white/20 disabled:opacity-50" disabled="" id="org-name" placeholder="Your Company, Inc." type="text"/>
+</div>
+<div>
+<label class="text-slate-300 text-sm font-medium mb-1.5 block" for="team-size">Team Size</label>
+<select class="w-full rounded-md bg-white/5 border border-white/10 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-white/20 disabled:opacity-50" disabled="" id="team-size">
+<option>Select a size</option>
+<option>1-10 members</option>
+<option>11-50 members</option>
+<option>51-200 members</option>
+<option>200+ members</option>
+</select>
+</div>
+<div class="pt-2">
+<button class="w-full flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-4 bg-black/20 text-slate-400 text-sm font-bold leading-normal tracking-[0.015em] transition-all border border-white/10 disabled:opacity-50" disabled="">
+<span class="truncate">Continue to Plan Selection</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="card-metallic rounded-xl p-8 md:p-10 opacity-40">
+<div class="flex flex-col gap-2 mb-8 text-center">
+<h3 class="text-2xl font-bold text-white">3. Select Your Plan</h3>
+<p class="text-slate-400 text-sm max-w-xl mx-auto">Choose a plan that fits your organization's needs. All plans include a 14-day free trial.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="flex flex-col gap-6 rounded-lg p-6 border border-white/10 bg-black/20 transition-all">
+<div class="text-center">
+<h4 class="text-xl font-bold text-white">Developer</h4>
+<p class="text-3xl font-black text-white mt-2">$29<span class="text-base font-medium text-slate-400">/mo</span></p>
+<p class="text-slate-400 text-sm mt-1">For individuals and small teams.</p>
+</div>
+<ul class="space-y-3 text-sm text-slate-300">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>5 Active Agents</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>10,000 Task Executions</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>Community Support</li>
+</ul>
+<button class="mt-auto w-full flex items-center justify-center rounded-lg h-10 px-4 bg-black/30 text-slate-300 text-sm font-bold hover:bg-black/50 border border-white/10 transition-colors disabled:opacity-50" disabled="">Select Plan</button>
+</div>
+<div class="flex flex-col gap-6 rounded-lg p-6 border border-white/10 bg-black/20 transition-all plan-card-active relative">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-200 text-black text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</div>
+<div class="text-center">
+<h4 class="text-xl font-bold text-white">Business</h4>
+<p class="text-3xl font-black text-white mt-2">$99<span class="text-base font-medium text-slate-400">/mo</span></p>
+<p class="text-slate-400 text-sm mt-1">For growing businesses and startups.</p>
+</div>
+<ul class="space-y-3 text-sm text-slate-300">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>25 Active Agents</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>50,000 Task Executions</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>Priority Email Support</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>Advanced Analytics</li>
+</ul>
+<button class="mt-auto w-full flex items-center justify-center rounded-lg h-10 px-4 bg-white/5 text-white text-sm font-bold hover:bg-white/10 border border-white/10 transition-colors disabled:opacity-50" disabled="">Select Plan</button>
+</div>
+<div class="flex flex-col gap-6 rounded-lg p-6 border border-white/10 bg-black/20 transition-all">
+<div class="text-center">
+<h4 class="text-xl font-bold text-white">Enterprise</h4>
+<p class="text-3xl font-black text-white mt-2">Custom</p>
+<p class="text-slate-400 text-sm mt-1">For large-scale deployments.</p>
+</div>
+<ul class="space-y-3 text-sm text-slate-300">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>Unlimited Agents</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>Dedicated Infrastructure</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>24/7 Premium Support</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-base text-slate-400">check_circle</span>Custom Integrations</li>
+</ul>
+<button class="mt-auto w-full flex items-center justify-center rounded-lg h-10 px-4 bg-black/30 text-slate-300 text-sm font-bold hover:bg-black/50 border border-white/10 transition-colors disabled:opacity-50" disabled="">Contact Sales</button>
+</div>
+</div>
+</div>
+</main>
+<footer class="text-center py-8">
+<p class="text-slate-500 text-sm">Already have an account? <a class="font-semibold text-slate-300 hover:text-white transition-colors" href="#">Sign In</a></p>
+</footer>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

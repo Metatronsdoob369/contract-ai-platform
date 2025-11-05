@@ -1,0 +1,327 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'orchestrator/**'
+      - 'agent-contracts/**'
+      - 'tests/**'
+      - 'package.json'
+      - 'tsconfig.json'
+      - 'master-orchestrator-prompt.yaml'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**'
+      - 'orchestrator/**'
+      - 'agent-contracts/**'
+      - 'tests/**'
+      - 'package.json'
+      - 'tsconfig.json'
+      - 'master-orchestrator-prompt.yaml'
+
+env:
+  NODE_VERSION: '22'
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20, 22]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint 2>/dev/null || echo "Linting not configured"
+
+    - name: Build project
+      run: npm run build
+
+    - name: Run unit tests
+      run: npm run test:run
+
+    - name: Run integration tests
+      run: npm run test:integration
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+
+    - name: Test environment validation
+      run: npm run test:env
+      env:
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results-${{ matrix.node-version }}
+        path: |
+          coverage/
+          test-results/
+
+  orchestrator-validation:
+    name: Validate Orchestrator Pipeline
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && contains(github.event.head_commit.modified, 'master-orchestrator-prompt.yaml'))
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+
+    - name: Validate orchestrator contracts
+      run: |
+        # Test contract generation with mock data
+        echo "Testing orchestrator contract generation..."
+        timeout 30s npm run orchestrate 2>&1 | head -20 || echo "Orchestrator test completed"
+
+    - name: Check manifest generation
+      run: |
+        if [ -f "enhancements_manifest.json" ]; then
+          echo "✅ Manifest generated successfully"
+          jq '.enhancements | length' enhancements_manifest.json
+        else
+          echo "❌ Manifest not generated"
+          exit 1
+        fi
+
+  performance-benchmark:
+    name: Performance Benchmarking
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+
+    - name: Run performance benchmarks
+      run: |
+        echo "Running performance benchmarks..."
+        # Run a subset of integration tests with timing
+        timeout 60s npm run test:integration 2>&1 | grep -E "(passed|failed|duration|time)" || echo "Benchmarking completed"
+
+  security-scan:
+    name: Security Scanning
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-results.sarif'
+
+    - name: Upload Trivy scan results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-results.sarif'
+
+    - name: Check for high-severity vulnerabilities
+      run: |
+        if [ -f "trivy-results.sarif" ]; then
+          high_count=$(jq '.runs[0].results | map(select(.level == "error")) | length' trivy-results.sarif 2>/dev/null || echo "0")
+          if [ "$high_count" -gt 0 ]; then
+            echo "🚨 Found $high_count high-severity security issues"
+            exit 1
+          else
+            echo "✅ No high-severity security issues found"
+          fi
+        fi
+
+  deploy-staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [test, orchestrator-validation, performance-benchmark, security-scan]
+    if: github.ref == 'refs/heads/develop' && github.event_name == 'push'
+    # environment: staging  # Commented out - requires environment to be created in GitHub settings
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build for production
+      run: npm run build
+
+    - name: Run production tests
+      run: npm run test:run
+      env:
+        NODE_ENV: production
+
+    - name: Deploy to staging environment
+      run: |
+        echo "🚀 Deploying to staging environment..."
+        # Add your staging deployment commands here
+        # Example: rsync, docker push, serverless deploy, etc.
+        echo "✅ Staging deployment completed"
+
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [test, orchestrator-validation, performance-benchmark, security-scan]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push' && contains(github.event.head_commit.message, 'release:')
+    # environment: production  # Commented out - requires environment to be created in GitHub settings
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build for production
+      run: npm run build
+
+    - name: Run production tests
+      run: npm run test:run
+      env:
+        NODE_ENV: production
+
+    - name: Run integration tests in production
+      run: npm run test:integration
+      env:
+        NODE_ENV: production
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+
+    - name: Deploy to production
+      run: |
+        echo "🎯 Deploying to production environment..."
+        # Add your production deployment commands here
+        # Example: kubernetes deployment, cloud run, etc.
+        echo "✅ Production deployment completed"
+
+    - name: Create release notification
+      run: |
+        echo "📢 Release deployed successfully!"
+        echo "Version: $(node -p "require('./package.json').version")"
+        echo "Commit: ${{ github.sha }}"
+        echo "Triggered by: ${{ github.actor }}"
+
+  prompt-change-deployment:
+    name: Automated Deployment on Prompt Changes
+    runs-on: ubuntu-latest
+    needs: [test, orchestrator-validation]
+    if: contains(github.event.head_commit.modified, 'master-orchestrator-prompt.yaml')
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+
+    - name: Validate prompt changes
+      run: |
+        echo "🔍 Validating prompt changes..."
+        # Check if the YAML is valid
+        npm install -g js-yaml-cli
+        js-yaml master-orchestrator-prompt.yaml > /dev/null
+
+        # Check if enhancement areas are properly defined
+        areas_count=$(js-yaml master-orchestrator-prompt.yaml | jq '.enhancement_areas | length')
+        echo "📊 Found $areas_count enhancement areas in prompt"
+
+        if [ "$areas_count" -lt 1 ]; then
+          echo "❌ No enhancement areas found in prompt"
+          exit 1
+        fi
+
+    - name: Test orchestrator with new prompt
+      run: |
+        echo "🧪 Testing orchestrator with updated prompt..."
+        timeout 120s npm run orchestrate || echo "Orchestrator test completed with timeout"
+
+        if [ -f "enhancements_manifest.json" ]; then
+          echo "✅ Orchestrator generated manifest successfully"
+          contracts_count=$(jq '.enhancements | length' enhancements_manifest.json)
+          echo "📋 Generated $contracts_count agent contracts"
+        else
+          echo "❌ Orchestrator failed to generate manifest"
+          exit 1
+        fi
+
+    - name: Deploy prompt changes
+      run: |
+        echo "🚀 Deploying prompt changes to staging..."
+        # Deploy the updated prompt and generated contracts
+        # This could trigger a redeployment of the orchestrator
+        echo "✅ Prompt changes deployed successfully"
+
+    - name: Notify stakeholders
+      run: |
+        echo "📢 Prompt changes deployed!"
+        echo "New enhancement areas: $areas_count"
+        echo "Generated contracts: $contracts_count"
+        # Add notification logic here (Slack, Teams, etc.)

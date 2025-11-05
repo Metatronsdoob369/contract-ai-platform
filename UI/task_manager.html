@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Agent Orchestrator - Task Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A90E2", // Desaturated Blue
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#1A1D21", // Deep charcoal grey
+                        "surface-dark": "#252930", // Lighter dark grey for cards
+                        "metal-gray": "#8D949E", // Polished silver/gunmetal grey
+                        "text-main": "#EAEAEA", // Off-white
+                        "text-secondary": "#A0AEC0", // Lighter grey
+                        "status-success": "#3A5C53", // Muted green
+                        "status-warning": "#6E5B3D", // Amber
+                        "status-error": "#6B4242", // Deep red
+                        "status-running": "#395B75" // Muted blue
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .brushed-metal {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05), rgba(0, 0, 0, 0.05)), url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="2"><rect width="100" height="2" fill="%23252930" /><line x1="0" y1="0" x2="100" y2="0" stroke="%23333" stroke-width="0.1" /><line x1="0" y1="1" x2="100" y2="1" stroke="%23111" stroke-width="0.1" /></svg>');
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-surface-dark/50 px-6 md:px-10 py-4 sticky top-0 bg-background-dark/80 backdrop-blur-sm z-50">
+<div class="flex items-center gap-4 text-text-main">
+<div class="size-6 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M12.0799 24L4 19.2479L9.95537 8.75216L18.04 13.4961L18.0446 4H29.9554L29.96 13.4961L38.0446 8.75216L44 19.2479L35.92 24L44 28.7521L38.0446 39.2479L29.96 34.5039L29.9554 44H18.0446L18.04 34.5039L9.95537 39.2479L4 28.7521L12.0799 24Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-text-main text-lg font-bold leading-tight tracking-[-0.015em]">Agent Orchestrator</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-center gap-8">
+<div class="flex items-center gap-9">
+<a class="text-text-main text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Dashboard</a>
+<a class="text-text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Agents</a>
+<a class="text-text-secondary text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Workflows</a>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 w-10 bg-surface-dark text-metal-gray hover:text-text-main transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 w-10 bg-surface-dark text-metal-gray hover:text-text-main transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-surface-dark" data-alt="User profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCLiPffgzJSTtMtp5YRYPXeZKc88ud7RIWoeY-mmgJiBGCBN-xCEf5j0gjPE_HrEmFuuudPkpTSO4IfvUspXO2x4n-9Cw5kjJJid8rqDzPpRbZA0Q1sBrBy1R1DwoS9jiP75JfuIYUhwwQEUiLNZXm_Yd5bBaQ13Z1-Zvc8G7T0bS7NQ2aRFXGSCAVrk_aCggB2ZLaNaywXRtUtpPZjg_1jKnSC5GfUpelfLxhH-EXXN34mjXHK1XzFmMl48Y222kMytjWni_5-tA");'></div>
+</div>
+</header>
+<main class="px-4 sm:px-6 md:px-10 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col w-full max-w-7xl flex-1 gap-6">
+<div class="flex flex-wrap justify-between items-start gap-4">
+<div class="flex min-w-72 flex-col gap-2">
+<p class="text-text-main text-3xl md:text-4xl font-black leading-tight tracking-tighter">Task Management</p>
+<p class="text-text-secondary text-base font-normal leading-normal">Monitor and manage all automated agent tasks from a centralized hub.</p>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-5 bg-primary text-white text-sm font-bold leading-normal tracking-wide hover:bg-primary/90 transition-all active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined mr-2 text-base">add</span>
+<span class="truncate">New Task</span>
+</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-surface-dark bg-surface-dark brushed-metal">
+<p class="text-text-secondary text-base font-medium leading-normal">Total Tasks Today</p>
+<p class="text-text-main tracking-tight text-3xl font-bold leading-tight">1,284</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-surface-dark bg-surface-dark brushed-metal">
+<p class="text-text-secondary text-base font-medium leading-normal">Active Agents</p>
+<p class="text-text-main tracking-tight text-3xl font-bold leading-tight">32</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-surface-dark bg-surface-dark brushed-metal">
+<p class="text-text-secondary text-base font-medium leading-normal">Tasks in Queue</p>
+<p class="text-text-main tracking-tight text-3xl font-bold leading-tight">112</p>
+</div>
+<div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-xl p-6 border border-surface-dark bg-surface-dark brushed-metal">
+<p class="text-text-secondary text-base font-medium leading-normal">Failed Tasks (24h)</p>
+<p class="text-text-main tracking-tight text-3xl font-bold leading-tight">8</p>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-0 top-1/2 -translate-y-1/2 text-metal-gray group-hover:text-primary group-focus-within:text-primary transition-colors">search</span>
+<input class="form-input w-full h-12 pl-8 pr-4 bg-transparent border-0 border-b border-metal-gray/30 text-text-main placeholder:text-text-secondary/60 focus:ring-0 focus:border-primary focus:bg-primary/10 hover:border-primary hover:bg-primary/10 transition-all" placeholder="Search by Task ID, Agent Name..." type="text" value=""/>
+</div>
+<div class="flex flex-wrap gap-3">
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-surface-dark pl-4 pr-3 border border-surface-dark hover:border-metal-gray/50 transition-colors">
+<p class="text-text-secondary text-sm font-medium leading-normal">Status</p>
+<span class="material-symbols-outlined text-metal-gray text-xl">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-surface-dark pl-4 pr-3 border border-surface-dark hover:border-metal-gray/50 transition-colors">
+<p class="text-text-secondary text-sm font-medium leading-normal">Priority</p>
+<span class="material-symbols-outlined text-metal-gray text-xl">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-surface-dark pl-4 pr-3 border border-surface-dark hover:border-metal-gray/50 transition-colors">
+<p class="text-text-secondary text-sm font-medium leading-normal">Agent</p>
+<span class="material-symbols-outlined text-metal-gray text-xl">expand_more</span>
+</button>
+<button class="flex h-9 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-surface-dark pl-4 pr-3 border border-surface-dark hover:border-metal-gray/50 transition-colors">
+<p class="text-text-secondary text-sm font-medium leading-normal">Date Range</p>
+<span class="material-symbols-outlined text-metal-gray text-xl">expand_more</span>
+</button>
+</div>
+</div>
+<div class="flex flex-col rounded-xl border border-surface-dark bg-surface-dark/50 overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="border-b border-surface-dark">
+<tr>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">Task ID</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">Task Name</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">Agent</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">Status</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">Priority</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">Start Time</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-text-secondary">End Time</th>
+<th class="p-4 text-xs font-semibold uppercase tracking-wider text-text-secondary text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-dark">
+<tr class="hover:bg-surface-dark/50 transition-colors">
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">T-58292</td>
+<td class="p-4 text-sm text-text-main font-medium whitespace-nowrap">Data Ingestion Pipeline</td>
+<td class="p-4 text-sm text-text-main whitespace-nowrap">Ingestor-01</td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-2 rounded-full bg-status-success/10 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-status-success"></div><span class="text-sm font-medium text-green-300">Completed</span></div></td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-x-2 rounded-full bg-status-error/10 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-status-error"></div><span class="text-sm font-medium text-red-400">High</span></div></td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">2023-10-27 08:00 UTC</td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">2023-10-27 08:15 UTC</td>
+<td class="p-4 text-sm text-metal-gray flex justify-end gap-2">
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">description</span></button>
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">replay</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-dark/50 transition-colors">
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">T-58291</td>
+<td class="p-4 text-sm text-text-main font-medium whitespace-nowrap">User Data Sync</td>
+<td class="p-4 text-sm text-text-main whitespace-nowrap">Sync-Agent-Alpha</td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-2 rounded-full bg-status-running/10 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-status-running animate-pulse"></div><span class="text-sm font-medium text-blue-300">Running</span></div></td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-x-2 rounded-full bg-status-warning/10 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-status-warning"></div><span class="text-sm font-medium text-amber-300">Medium</span></div></td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">2023-10-27 09:30 UTC</td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">--</td>
+<td class="p-4 text-sm text-metal-gray flex justify-end gap-2">
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">description</span></button>
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">stop_circle</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-dark/50 transition-colors">
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">T-58290</td>
+<td class="p-4 text-sm text-text-main font-medium whitespace-nowrap">Nightly Report Generation</td>
+<td class="p-4 text-sm text-text-main whitespace-nowrap">Reporter-03</td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-2 rounded-full bg-status-error/10 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-status-error"></div><span class="text-sm font-medium text-red-400">Failed</span></div></td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-x-2 rounded-full bg-status-error/10 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-status-error"></div><span class="text-sm font-medium text-red-400">High</span></div></td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">2023-10-27 02:00 UTC</td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">2023-10-27 02:01 UTC</td>
+<td class="p-4 text-sm text-metal-gray flex justify-end gap-2">
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">description</span></button>
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">replay</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-dark/50 transition-colors">
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">T-58289</td>
+<td class="p-4 text-sm text-text-main font-medium whitespace-nowrap">System Health Check</td>
+<td class="p-4 text-sm text-text-main whitespace-nowrap">Monitor-Beta</td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-2 rounded-full bg-surface-dark/60 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-metal-gray"></div><span class="text-sm font-medium text-text-secondary">Queued</span></div></td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-x-2 rounded-full bg-surface-dark/60 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-metal-gray"></div><span class="text-sm font-medium text-text-secondary">Low</span></div></td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">--</td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">--</td>
+<td class="p-4 text-sm text-metal-gray flex justify-end gap-2">
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">description</span></button>
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">stop_circle</span></button>
+</td>
+</tr>
+<tr class="hover:bg-surface-dark/50 transition-colors">
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">T-58288</td>
+<td class="p-4 text-sm text-text-main font-medium whitespace-nowrap">Cache Invalidation</td>
+<td class="p-4 text-sm text-text-main whitespace-nowrap">Cache-Bot-07</td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-2 rounded-full bg-status-success/10 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-status-success"></div><span class="text-sm font-medium text-green-300">Completed</span></div></td>
+<td class="p-4 text-sm whitespace-nowrap"><div class="inline-flex items-center gap-x-2 rounded-full bg-status-warning/10 py-1 pl-2 pr-3"><div class="h-1.5 w-1.5 rounded-full bg-status-warning"></div><span class="text-sm font-medium text-amber-300">Medium</span></div></td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">2023-10-26 18:45 UTC</td>
+<td class="p-4 text-sm text-text-secondary whitespace-nowrap">2023-10-26 18:46 UTC</td>
+<td class="p-4 text-sm text-metal-gray flex justify-end gap-2">
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">description</span></button>
+<button class="p-1.5 rounded-md hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">replay</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex items-center justify-between p-4 border-t border-surface-dark">
+<p class="text-sm text-text-secondary">Showing 1 to 5 of 112 tasks</p>
+<div class="flex items-center gap-2">
+<button class="flex items-center justify-center h-8 w-8 rounded-md text-metal-gray hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">chevron_left</span></button>
+<span class="text-sm text-text-main font-medium">Page 1 of 23</span>
+<button class="flex items-center justify-center h-8 w-8 rounded-md text-metal-gray hover:bg-surface-dark hover:text-text-main transition-colors"><span class="material-symbols-outlined text-xl">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+<!-- Contract Review Status Overlay -->
+<div id="contract-review-overlay" class="fixed inset-0 bg-black/50 hidden z-50">
+  <div class="flex items-center justify-center min-h-screen p-4">
+    <div class="bg-surface-main border border-surface-dark rounded-lg shadow-xl max-w-md w-full">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg font-semibold text-text-main">Contract Review Status</h3>
+          <button onclick="closeReviewOverlay()" class="text-text-secondary hover:text-text-main">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="text-sm text-text-secondary">Review Depth:</span>
+            <span id="review-iteration-count" class="text-sm font-medium text-text-main">0/5</span>
+          </div>
+
+          <div class="w-full bg-surface-dark rounded-full h-2">
+            <div id="review-progress-bar" class="bg-accent-blue h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4 text-sm">
+            <div>
+              <span class="text-text-secondary">Resolved:</span>
+              <span id="resolved-count" class="font-medium text-green-400 ml-1">0</span>
+            </div>
+            <div>
+              <span class="text-text-secondary">Pending:</span>
+              <span id="pending-count" class="font-medium text-amber-400 ml-1">0</span>
+            </div>
+          </div>
+
+          <div class="text-xs text-text-secondary bg-surface-dark p-3 rounded">
+            <strong>Minimum Review Depth Enforced:</strong> Contract reviews require at least 5 iterations to prevent premature exits and ensure comprehensive analysis.
+          </div>
+
+          <button onclick="forceCompleteReview()" class="w-full bg-accent-blue hover:bg-accent-blue/80 text-white py-2 px-4 rounded-md transition-colors">
+            Force Complete Review (5+ iterations)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Review Status Toast -->
+<div id="review-status-toast" class="fixed bottom-4 right-4 bg-surface-main border border-surface-dark rounded-lg shadow-lg p-4 hidden z-40 max-w-sm">
+  <div class="flex items-start gap-3">
+    <div class="flex-shrink-0">
+      <span class="material-symbols-outlined text-accent-blue">info</span>
+    </div>
+    <div class="flex-1">
+      <p class="text-sm text-text-main font-medium">Review Depth Protection Active</p>
+      <p class="text-xs text-text-secondary mt-1">Contract reviews now enforce minimum 5 iterations to prevent premature completion.</p>
+    </div>
+    <button onclick="hideReviewToast()" class="flex-shrink-0 text-text-secondary hover:text-text-main">
+      <span class="material-symbols-outlined text-lg">close</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  // Contract Review UI Functions
+  function showReviewOverlay() {
+    document.getElementById('contract-review-overlay').classList.remove('hidden');
+  }
+
+  function closeReviewOverlay() {
+    document.getElementById('contract-review-overlay').classList.add('hidden');
+  }
+
+  function hideReviewToast() {
+    document.getElementById('review-status-toast').classList.add('hidden');
+  }
+
+  function forceCompleteReview() {
+    // Show toast notification
+    const toast = document.getElementById('review-status-toast');
+    toast.classList.remove('hidden');
+
+    // Auto-hide after 5 seconds
+    setTimeout(() => {
+      toast.classList.add('hidden');
+    }, 5000);
+
+    // Update review counters (mock data for demo)
+    document.getElementById('review-iteration-count').textContent = '5/5';
+    document.getElementById('review-progress-bar').style.width = '100%';
+    document.getElementById('resolved-count').textContent = '12';
+    document.getElementById('pending-count').textContent = '0';
+
+    closeReviewOverlay();
+  }
+
+  // Initialize review protection on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    // Show initial toast about review protection
+    setTimeout(() => {
+      const toast = document.getElementById('review-status-toast');
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 4000);
+    }, 1000);
+  });
+</script>
+</body></html>

@@ -1,0 +1,163 @@
+# Social Media Knowledge Source Registry
+# This registry tracks all datasets, documents, and external sources
+# feeding into the Knowledge Access Layer
+
+sources:
+  # Core Platform Documentation
+  - id: "twitter_api_docs"
+    title: "Twitter API v2 Documentation"
+    url: "https://developer.twitter.com/en/docs/twitter-api"
+    license: "Proprietary"
+    update_freq: "continuous"
+    owner: "X Corp"
+    pii_classification: "none"
+    domain: "platform_docs"
+    tags: ["api", "rate_limits", "authentication"]
+
+  - id: "instagram_api_docs"
+    title: "Instagram Basic Display API"
+    url: "https://developers.facebook.com/docs/instagram-basic-display-api"
+    license: "Proprietary"
+    update_freq: "quarterly"
+    owner: "Meta"
+    pii_classification: "none"
+    domain: "platform_docs"
+    tags: ["api", "rate_limits", "media"]
+
+  - id: "tiktok_api_docs"
+    title: "TikTok for Developers"
+    url: "https://developers.tiktok.com"
+    license: "Proprietary"
+    update_freq: "monthly"
+    owner: "ByteDance"
+    pii_classification: "none"
+    domain: "platform_docs"
+    tags: ["api", "rate_limits", "video"]
+
+  # Research and Analytics Datasets
+  - id: "sprout_2025_metrics"
+    title: "SproutSocial Metrics 2025"
+    url: "https://sproutsocial.com/insights/social-media-metrics/"
+    license: "Copyright"
+    update_freq: "annual"
+    owner: "Sprout Social"
+    pii_classification: "none"
+    domain: "research"
+    tags: ["metrics", "engagement", "analytics"]
+
+  - id: "databox_2024"
+    title: "Social Media Analytics Tools Report"
+    url: "https://databox.com/social-media-metrics-that-matter"
+    license: "Copyright"
+    update_freq: "annual"
+    owner: "Databox"
+    pii_classification: "none"
+    domain: "research"
+    tags: ["analytics", "tools", "metrics"]
+
+  - id: "hootsuite_2024"
+    title: "Hootsuite Social Media Trends Report"
+    url: "https://www.hootsuite.com/research/social-media-trends"
+    license: "Copyright"
+    update_freq: "annual"
+    owner: "Hootsuite"
+    pii_classification: "none"
+    domain: "research"
+    tags: ["trends", "engagement", "demographics"]
+
+  # Compliance and Legal
+  - id: "ftc_guidelines"
+    title: "FTC Endorsement Guidelines"
+    url: "https://www.ftc.gov/business-guidance/resources/ftcs-endorsement-guides-what-people-are-asking"
+    license: "Public Domain (US Government)"
+    update_freq: "as_needed"
+    owner: "Federal Trade Commission"
+    pii_classification: "none"
+    domain: "compliance"
+    tags: ["advertising", "disclosure", "legal"]
+
+  - id: "gdpr_social_media"
+    title: "GDPR Compliance for Social Media"
+    url: "https://gdpr-info.eu"
+    license: "Public Domain"
+    update_freq: "continuous"
+    owner: "European Commission"
+    pii_classification: "none"
+    domain: "compliance"
+    tags: ["privacy", "gdpr", "data_protection"]
+
+  # Machine Learning and AI Research
+  - id: "sentiment_analysis_acl"
+    title: "ACL Anthology - Sentiment Analysis Papers"
+    url: "https://aclanthology.org"
+    license: "CC BY-SA"
+    update_freq: "continuous"
+    owner: "ACL"
+    pii_classification: "none"
+    domain: "research"
+    tags: ["sentiment", "nlp", "machine_learning"]
+
+  - id: "ml_performance_social"
+    title: "Machine Learning for Social Media Performance Prediction"
+    url: "https://arxiv.org"
+    license: "CC BY"
+    update_freq: "continuous"
+    owner: "Academic Research"
+    pii_classification: "none"
+    domain: "research"
+    tags: ["machine_learning", "prediction", "engagement"]
+
+  # Influencer and Community Data
+  - id: "influencer_db_2025"
+    title: "Social Media Influencer Database 2025"
+    url: "https://influencermarketinghub.com"
+    license: "Copyright"
+    update_freq: "quarterly"
+    owner: "Influencer Marketing Hub"
+    pii_classification: "none"
+    domain: "influencers"
+    tags: ["influencers", "credibility", "demographics"]
+
+  - id: "community_mapping_data"
+    title: "Social Media Community Mapping Study"
+    url: "https://researchgate.net"
+    license: "Academic"
+    update_freq: "annual"
+    owner: "Academic Research"
+    pii_classification: "none"
+    domain: "research"
+    tags: ["communities", "networking", "engagement"]
+
+  # Trend and Viral Content Research
+  - id: "tiktok_trends_api"
+    title: "TikTok Trending Hashtags and Challenges"
+    url: "https://developers.tiktok.com/docs/research-api"
+    license: "Proprietary"
+    update_freq: "continuous"
+    owner: "ByteDance"
+    pii_classification: "none"
+    domain: "trends"
+    tags: ["trends", "viral", "content"]
+
+  - id: "viral_content_study"
+    title: "Viral Content Spread Analysis"
+    url: "https://www.pewresearch.org/internet/fact-sheet/social-media"
+    license: "CC BY"
+    update_freq: "annual"
+    owner: "Pew Research Center"
+    pii_classification: "none"
+    domain: "research"
+    tags: ["viral", "spread", "engagement"]
+
+# Metadata
+registry_version: "1.0.0"
+last_updated: "2025-10-23T14:00:00Z"
+total_sources: 15
+domains_covered: ["platform_docs", "research", "compliance", "influencers", "trends"]
+license_distribution:
+  proprietary: 4
+  copyright: 4
+  cc_by: 2
+  cc_by_sa: 1
+  public_domain: 2
+  academic: 2

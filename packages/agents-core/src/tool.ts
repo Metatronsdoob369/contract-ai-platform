@@ -72,7 +72,7 @@ export type FunctionTool<
   /**
    * A JSON schema describing the parameters of the tool.
    */
-  parameters: JsonObjectSchema<any>;
+  parameters: ToolInputParameters;
   /**
    * Whether the tool is strict. If true, the model must try to strictly follow the schema (might result in slower response times).
    */

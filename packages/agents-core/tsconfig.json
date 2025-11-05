@@ -8,5 +8,6 @@
       "@openai/agents-core/_shims": ["./src/shims/shims-node.ts"]
     }
   },
-  "exclude": ["dist/**", "test/**"]
+  "include": ["src/**/*"],
+  "exclude": ["dist/**", "test/**", "**/node_modules/**", "../../orchestrator/**"]
 }

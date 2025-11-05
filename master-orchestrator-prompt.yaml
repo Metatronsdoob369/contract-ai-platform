@@ -1,0 +1,124 @@
+# Master Orchestrator Prompt - Structured Format
+# Converted to YAML for deterministic parsing and reliability
+
+enhancement_areas:
+  - name: "Audience Segmentation Depth"
+    objective: "Move beyond basic categories to multi-dimensional segmentation including psychographics, geo-location, and device type."
+    key_requirements:
+      - "Implement psychographic segmentation (interests, behaviors)"
+      - "Add geo-location and device type targeting"
+      - "Create multi-dimensional user profiles"
+      - "Integrate with existing Young/Professional/Family/Luxury categories"
+    sources: ["3"]
+    depends_on: []
+
+  - name: "Performance Prediction Models"
+    objective: "Integrate machine learning models for real-time post success predictions."
+    key_requirements:
+      - "Train ML models on historical post performance data"
+      - "Enable real-time success predictions vs simple boost factors"
+      - "Create prediction algorithms for engagement rates"
+      - "Implement continuous learning from performance data"
+    sources: ["4", "6"]
+    depends_on: []
+
+  - name: "Cross-Platform Attribution"
+    objective: "Build system for cross-platform campaign tracking and omnichannel measurement."
+    key_requirements:
+      - "Track engagement/virality impact across platforms"
+      - "Measure cross-platform campaign effectiveness"
+      - "Implement attribution models for multi-platform strategies"
+      - "Generate ROI calculations for omnichannel campaigns"
+    sources: ["2", "4"]
+    depends_on: []
+
+  - name: "Sentiment and Emotional Resonance"
+    objective: "Automate sentiment analysis and emotional categorization of social content."
+    key_requirements:
+      - "Analyze sentiment of post replies and comments"
+      - "Implement emotional categorization systems"
+      - "Provide algorithm tips based on sentiment data"
+      - "Enable timing adjustments based on emotional resonance"
+    sources: ["7"]
+    depends_on: []
+
+  - name: "A/B Testing Protocols"
+    objective: "Build automated split-testing protocols for social media content optimization."
+    key_requirements:
+      - "Create recommendations for post format testing"
+      - "Implement automated A/B testing for captions, hashtags, timing"
+      - "Incorporate testing results for continuous optimization"
+      - "Generate performance improvement protocols"
+    sources: ["5"]
+    depends_on: []
+
+  - name: "Compliance and Accessibility"
+    objective: "Manage platform-specific compliance rules and accessibility requirements."
+    key_requirements:
+      - "Store and update copyright/music usage rules"
+      - "Implement ad labeling compliance checks"
+      - "Ensure accessibility (alt text, captions) requirements"
+      - "Create risk management protocols for compliance"
+    sources: ["1"]
+    depends_on: []
+
+  - name: "Influencer/Community Mapping"
+    objective: "Identify and interact with high-value influencers and communities."
+    key_requirements:
+      - "Recognize and flag influencer profiles per platform"
+      - "Map relevant communities for engagement"
+      - "Track virality potential from influencer interactions"
+      - "Enable targeted reach through community connections"
+    sources: ["1"]
+    depends_on: []
+
+  - name: "Trend Detection"
+    objective: "Implement real-time trend-spotting and viral content identification."
+    key_requirements:
+      - "Identify emerging hashtags and challenges"
+      - "Track meme formats and viral sounds"
+      - "Monitor real-time trend development"
+      - "Provide viral-first content creation insights"
+    sources: ["8", "9"]
+    depends_on: []
+
+  - name: "Native API Integration/Rate Limits"
+    objective: "Manage platform API limits, reliability, and data extraction capabilities."
+    key_requirements:
+      - "Track latest API limits per platform"
+      - "Monitor API reliability scores"
+      - "Implement efficient data extraction protocols"
+      - "Optimize automation within rate limit constraints"
+    sources: ["6"]
+    depends_on: []
+
+  - name: "Language and Localization"
+    objective: "Provide native support for multi-language content optimization."
+    key_requirements:
+      - "Generate localized captions and hashtags"
+      - "Adapt tone for different audience regions"
+      - "Support multiple languages beyond English"
+      - "Create region-specific content strategies"
+    sources: ["4"]
+    depends_on: []
+
+# Processing Instructions (preserved for compatibility)
+processing_instructions:
+  - "Spawn one agent per enhancement area listed above"
+  - "Each agent researches their specific area using provided sources"
+  - "Validate all contracts against the schema"
+  - "Build dependency graph based on depends_on relationships"
+  - "Generate implementation manifest and code artifacts"
+
+# Agent Contract Requirements (preserved for compatibility)
+agent_contract_requirements:
+  enhancement_area: "Clear, specific area name"
+  objective: "Detailed description of what the agent achieves"
+  implementation_plan: "Object with modules array and architecture details"
+  depends_on: "Array of prerequisite enhancement areas (if any)"
+  sources: "Array of research sources and references"
+  governance: "Security, compliance, and ethical considerations"
+  validation_criteria: "How to measure agent success"
+
+# Output Format
+output_format: "Agents return strict JSON only - no prose or explanations outside the contract structure."

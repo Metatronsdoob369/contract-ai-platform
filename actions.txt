@@ -1,0 +1,8 @@
+PLAN AREA=Trend Detection GOAL="payer+state filters" WHY="decision slicing"
+MIGRATE_UI SRC=/static/dashboard.html DEST=/app/pages/Dashboard.tsx NOTES="preserve styling"
+CREATE_COMPONENT NAME=PayerFilter TYPE=react PATH=/app/components/filters/PayerFilter.tsx
+CREATE_COMPONENT NAME=StateFilter TYPE=react PATH=/app/components/filters/StateFilter.tsx
+DEFINE_API NAME=ListPayers METHOD=GET PATH=/api/payers REQ="-" RES="[{id,name}]" ERRORS="429,500"
+DEFINE_API NAME=ListStates METHOD=GET PATH=/api/states REQ="-" RES="[{code,name}]" ERRORS="429,500"
+ADD_TESTS SCOPE=filters KIND=e2e CRITERIA="updates charts <=200ms"
+ENFORCE_SECURITY MITIGATIONS="input-validation,CSP" SECRETS="vault" RATELIMIT="120rpm"

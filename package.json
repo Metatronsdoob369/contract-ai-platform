@@ -1,18 +1,18 @@
 {
-  "name": "@contract-ai-platform/core",
-  "version": "0.9.0",
-  "description": "Contract-Driven AI Platform - Treat agents like APIs with contracts, governance, and trust scores",
-  "keywords": ["ai", "agents", "orchestration", "contracts", "governance", "typescript"],
-  "author": "Contract-Driven AI Platform Team",
+  "name": "@covenant-ai/platform",
+  "version": "1.0.0",
+  "description": "Covenant AI - The Contract-Driven AI Orchestration Platform. Making AI agents as reliable as APIs through quantum-verified contracts.",
+  "keywords": ["ai", "agents", "orchestration", "contracts", "governance", "quantum-verification", "typescript", "covenant-ai"],
+  "author": "Covenant AI",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/contract-ai-platform.git"
+    "url": "https://github.com/Metatronsdoob369/contract-ai-platform.git"
   },
   "bugs": {
-    "url": "https://github.com/your-org/contract-ai-platform/issues"
+    "url": "https://github.com/Metatronsdoob369/contract-ai-platform/issues"
   },
-  "homepage": "https://github.com/your-org/contract-ai-platform#readme",
+  "homepage": "https://github.com/Metatronsdoob369/contract-ai-platform#readme",
   "type": "commonjs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -48,8 +48,12 @@
     "examples:orchestrator": "ts-node examples/orchestrator-basic.ts",
     "examples:monitoring": "ts-node examples/monitoring-basic.ts",
     "examples:social-media": "ts-node examples/social-media-agent.ts",
-    "examples:financial": "ts-node examples/financial-research.ts",
-    "examples": "echo 'Available examples: builder, orchestrator, monitoring, social-media, financial'",
+    "examples:financial": "ts-node examples/financial-research-integrated.ts",
+    "examples:research": "ts-node examples/research-analysis-agent.ts",
+    "examples:healthcare": "ts-node examples/healthcare-agent.ts",
+    "examples:schema-generation": "ts-node examples/schema-generation/healthcare-domain.ts",
+    "examples:care-coordination": "ts-node examples/care-coordination-workflow.ts",
+    "examples": "echo 'Available examples: builder, orchestrator, monitoring, social-media, financial, research, healthcare, schema-generation, care-coordination'",
     "docs:dev": "cd docs && npm run dev",
     "docs:build": "cd docs && npm run build",
     "lint": "eslint src/**/*.ts examples/**/*.ts",

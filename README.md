@@ -256,6 +256,69 @@ If you want to contribute or edit the SDK/examples:
 
 See `AGENTS.md` and `CONTRIBUTING.md` for the full contributor guide.
 
+## 🏗️ Domicile Integration - Contract-Driven AI Platform
+
+**🌟 New Addition:** This repository now includes the **Domicile platform** - a revolutionary contract-driven AI orchestration system with Circadian learning capabilities.
+
+### **What is Domicile?**
+
+Domicile extends the OpenAI Agents SDK with:
+- **Contract-driven architecture** eliminating prompt fragility
+- **Policy governance** preventing agent gaming and manipulation  
+- **Circadian learning** - the system dreams about decisions vs outcomes at 3AM
+- **Self-improving collaboration** between humans and AI
+
+### **Architecture Overview**
+
+```
+packages/domicile/
+├── core/           # Layer 2: Orchestration (Policy, Registry, Classifier)
+├── agents/         # Layer 3: Execution (Domain-specific agents)
+├── contracts/      # Layer 4: Contracts & Schemas  
+├── covenant/       # Layer 2: Governance (Trust oracles)
+├── interface/      # Layer 1: User Interface
+├── data/          # Layer 4: Storage & Knowledge
+└── observability/ # Layer 5: Monitoring
+```
+
+### **Key Innovation: The Sleep Cycle**
+
+Every night at 3AM, Domicile:
+- **Prunes** failed memories and approaches
+- **Consolidates** successful patterns
+- **Proposes** constitutional changes based on evidence
+- **Dreams** new experimental strategies
+- **Wakes** with better understanding of human intent
+
+### **Getting Started with Domicile**
+
+```bash
+# Install the integrated platform
+pnpm install
+
+# View integration documentation  
+cat README-DOMICILE.md
+cat CIRCADIAN_PHILOSOPHY.md
+
+# Run Domicile integration
+pnpm run integrate
+```
+
+### **Integration Documents**
+
+- 📋 [**DOMICILE_INTEGRATION_PLAN.md**](DOMICILE_INTEGRATION_PLAN.md) - Master blueprint
+- 🛣️ [**INTEGRATION_ROADMAP.md**](INTEGRATION_ROADMAP.md) - Implementation timeline
+- 🗺️ [**COMPONENT_MAPPING.md**](COMPONENT_MAPPING.md) - Component relocation details
+- 🌙 [**CIRCADIAN_PHILOSOPHY.md**](CIRCADIAN_PHILOSOPHY.md) - Learning architecture
+
+### **The Vision**
+
+Create the first AI platform where humans and AI start with **mutual understanding** and **shared vision** of the output. Where collaboration begins at the accurate place, every time.
+
+**"The platform that dreams about its decisions vs outcomes, learning to understand you better while you sleep."** 🌅
+
+---
+
 ## Acknowledgements
 
 We'd like to acknowledge the excellent work of the open-source community, especially:

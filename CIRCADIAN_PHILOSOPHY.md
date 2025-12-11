@@ -1,294 +1,368 @@
-# 🌅 THE CIRCADIAN PHILOSOPHY
-## Where AI/Human Collaboration Begins at the Right Place
+# 🌙 THE CIRCADIAN MEMORY MANAGEMENT COMPONENT
+## ACF Memory Core Implementation within ArbiterOS/Domicile Architecture
 
-**Vision:** A platform where AI and humans start with mutual understanding and shared vision of the output  
-**Core Innovation:** The system that dreams about its decisions vs outcomes, learning while you sleep
+**Component Scope:** Circadian implements the Memory Core within the Agent Constitution Framework (ACF), specifically managing the "Volatile and Unreliable Memory" property divergence of the Agentic Computer  
+**Core Innovation:** Governed memory lifecycle management that prevents Cognitive Corruption through systematic synaptic pruning
 
----
-
-## 🎯 THE FUNDAMENTAL PROBLEM WE'RE SOLVING
-
-### **Current Reality: Lost in Translation**
-- **Humans** start with vague ideas, unclear requirements
-- **AI** starts with no context, guessing at intent
-- **Result:** Wasted cycles, frustration, "that's not what I meant"
-
-### **Circadian Solution: Accurate Starting Points**
-- **Shared Context** from the first interaction
-- **Mutual Understanding** of the desired outcome
-- **Aligned Vision** before any work begins
-- **Result:** Right output, first time, every time
+**Architectural Position:**
+- **ArbiterOS Layer:** Memory Core (1 of 5 ACF Operational Cores)  
+- **Domicile Layer:** HIPPOCAMPUS/MEMORY (Layer 4)
+- **Governance Role:** Mitigates "High-Risk Probabilistic Operations" in memory management
 
 ---
 
-## 🌙 THE SLEEP CYCLE: How Systems Learn
+## 🎯 THE AGENTIC COMPUTER PROPERTY DIVERGENCE
+
+### **Property #5: Volatile and Unreliable Memory (Context Window)**
+- **Semantic Eviction:** Important context gets dropped unpredictably
+- **Attention Variance:** "Lost-in-the-middle" problem degrades retrieval
+- **No Virtual Memory:** Unlike traditional OS, no automatic memory management
+- **Risk:** Silent state corruption leading to **Cognitive Corruption**
+
+### **ACF Memory Core Instructions Requiring Governance**
+- **COMPRESS:** High-Risk Probabilistic Operation requiring VERIFY step
+- **LOAD:** Deterministic I/O with subsequent cognitive validation needed  
+- **STORE:** Deterministic I/O with policies preventing memory corruption
+
+### **Circadian Solution: Governed Memory Lifecycle**
+- **Deterministic Pruning** based on PruningPolicy thresholds
+- **State Transitions** follow formal LifecycleManagedMemory specification
+- **Verification Gates** ensure memory operations maintain fidelity
+- **Result:** Bounded memory footprint with preserved cognitive performance
+
+---
+
+## 🌙 THE CIRCADIAN CYCLE: SynapticPruningEngine Runtime
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│                           DREAM-001: THE SLEEP CYCLE                             │
-│                              Trigger: Cron 3:00 AM                               │
+│                    CIRCADIAN MEMORY MANAGEMENT CYCLE                             │
+│                          Trigger: Cron 3:00 AM Daily                             │
+│                     Component: SynapticPruningEngine                              │
 └─────────────────────────────────────────────────────────────────────────────────┘
                                         │
                                         ▼
                     ┌───────────────────────────────────────┐
-                    │         PHASE 1: SYNAPTIC PRUNING     │
-                    │         "Forgetting the Failures"      │
+                    │         PHASE 1: MEMORY ASSESSMENT    │
+                    │         "Calculate Decay Metrics"      │
                     │                                        │
-                    │  • Query dead memories (score < 30)    │
-                    │  • Archive to memory_graveyard         │
-                    │  • Recalculate vector index            │
+                    │  • Query LifecycleManagedMemory       │
+                    │  • Calculate relevanceScore           │
+                    │  • Calculate uniquenessScore          │
+                    │  • Update accessMetrics               │
                     └───────────────────┬───────────────────┘
                                         │
                                         ▼
                     ┌───────────────────────────────────────┐
-                    │      PHASE 2: PATTERN CONSOLIDATION   │
-                    │         "What Did We Learn?"           │
+                    │      PHASE 2: STATE TRANSITIONS       │
+                    │       "Apply Pruning Policy"           │
                     │                                        │
-                    │  • Aggregate engagement by feature     │
-                    │  • Detect statistical anomalies        │
-                    │  • Build evidence chains               │
+                    │  • HOT → WARM (based on access)       │
+                    │  • WARM → COLD (relevance decay)      │
+                    │  • COLD → ARCHIVED (age thresholds)   │
+                    │  • ARCHIVED → PRUNED (final cleanup)  │
                     └───────────────────┬───────────────────┘
                                         │
                                         ▼
                     ┌───────────────────────────────────────┐
-                    │     PHASE 3: CONSTITUTIONAL MUTATION  │
-                    │         "Propose the Changes"          │
+                    │     PHASE 3: VECTOR STORE OPTIMIZATION│
+                    │         "Rebuild Efficient Index"      │
                     │                                        │
-                    │  • Generate rule modification PRs      │
-                    │  • Calculate confidence scores         │
-                    │  • Queue for human review              │
+                    │  • Remove PRUNED memories from store  │
+                    │  • Rebuild vector embeddings          │
+                    │  • Optimize index structure            │
+                    │  • Update memory pointers              │
                     └───────────────────┬───────────────────┘
                                         │
                                         ▼
                     ┌───────────────────────────────────────┐
-                    │     PHASE 4: HALLUCINATION CHAMBER    │
-                    │         "Dream New Strategies"         │
+                    │     PHASE 4: PERFORMANCE VALIDATION   │
+                    │         "Verify System Health"         │
                     │                                        │
-                    │  • Inject controlled entropy           │
-                    │  • Generate experimental content       │
-                    │  • Score against current constitution  │
-                    │  • Propose A/B tests for tomorrow      │
+                    │  • Check memory usage metrics         │
+                    │  • Validate retrieval performance     │
+                    │  • Generate pruning report            │
+                    │  • Log optimization results           │
                     └───────────────────┬───────────────────┘
                                         │
                                         ▼
                     ┌───────────────────────────────────────┐
-                    │         PHASE 5: WAKE SIGNAL          │
-                    │         "Prepare for Dawn"             │
+                    │         PHASE 5: READY SIGNAL         │
+                    │         "System Optimized"             │
                     │                                        │
-                    │  • Update system_state to AWAKE        │
-                    │  • Notify human of pending proposals   │
-                    │  • Log dream_receipt to audit          │
+                    │  • Update system performance state    │
+                    │  • Notify of completed optimization   │
+                    │  • Schedule next pruning cycle        │
                     └───────────────────────────────────────┘
 ```
 
 ---
 
-## 🧠 THE CORE INSIGHT: Mutual Understanding
+## 🧠 THE CORE INSIGHT: Biological Memory Management
 
 ### **Traditional Approach:**
 ```
-Human: "Build me a social media agent"
-AI: [Guesses what you mean, builds generic solution]
-Human: "No, not like that..."
-[Repeat 10x with frustration]
+System Memory: [Stores everything indefinitely]
+Vector Store: [Grows unbounded, becomes slow]
+Retrieval: [Returns increasingly irrelevant results]
+Performance: [Degrades over time]
 ```
 
 ### **Circadian Approach:**
 ```
-Human: "Build me a social media agent"
-System: [Checks dream memories of similar requests]
-System: [Shows learned patterns from past collaborations]
-System: "Based on past interactions, you probably want:
-         - Audience engagement focus (85% probability)
-         - Multi-platform support (72% probability)  
-         - Content scheduling (91% probability)
-         Is this the direction?"
-Human: "Yes, but also add..."
-System: [Already has accurate starting point]
-[Delivers correct solution first time]
+Night Cycle: [SynapticPruningEngine runs at 3AM]
+Memory Assessment: [Calculate relevance + uniqueness scores]
+State Transitions: [HOT→WARM→COLD→ARCHIVED→PRUNED]
+Vector Optimization: [Remove low-value memories, rebuild index]
+Result: [Consistent performance, focused context]
 ```
 
 ---
 
-## 💾 THE MEMORY ARCHITECTURE
+## 💾 ACF MEMORY CORE TSDI SPECIFICATION
 
-### **Living Memories (Active Learning)**
-- Current collaborations and their outcomes
-- Real-time pattern recognition
-- Immediate feedback loops
-
-### **Dream Processing (3 AM Cycle)**
-- Prune failed approaches (engagement < 30%)
-- Consolidate successful patterns
-- Propose constitutional changes
-- Hallucinate new strategies
-
-### **Memory Graveyard (Wisdom from Failure)**
-```sql
--- Where dead ideas teach future success
-create table memory_graveyard (
-  id uuid primary key,
-  content text,
-  cause_of_death text, -- 'low_engagement', 'repeated_rejection', 'obsolete'
-  autopsy jsonb -- What we learned from this failure
-);
-```
-
----
-
-## 🔄 THE EVOLUTION MECHANISM
-
-### **1. Synaptic Pruning (Forgetting Intelligently)**
-- Not all memories are worth keeping
-- Failed patterns get archived with lessons learned
-- System becomes more efficient by forgetting noise
-
-### **2. Pattern Consolidation (Learning from Experience)**
-- Successful collaborations become templates
-- Common requests get optimized pathways
-- System builds institutional knowledge
-
-### **3. Constitutional Mutation (Evolving the Rules)**
-- System proposes changes to its own behavior
-- Evidence-based modifications
-- Human approval for governance changes
-
-### **4. Hallucination Chamber (Controlled Creativity)**
-- Generate experimental approaches
-- Test novel strategies
-- Expand beyond learned patterns
-
-### **5. Wake Signal (Ready for Tomorrow)**
-- System emerges with refined understanding
-- Better prepared for human collaboration
-- Closer to mutual understanding
-
----
-
-## 🎯 PRACTICAL IMPLEMENTATION
-
-### **For the Curl Agent Example:**
+### **ACF Memory Core Integration**
 ```typescript
-// Day 1: User asks "help me use curl"
-// System: Generic curl help
-
-// After Dream Cycle:
-// System learned: User actually wanted API testing
-// Memory consolidated: curl + API patterns
-
-// Day 2: User asks "help me use curl"  
-// System: "Based on yesterday, would you like to test an API?"
-// ACCURATE STARTING POINT ACHIEVED
+interface ACF_Memory_Core_Implementation {
+  instructions: {
+    COMPRESS: CircadianCompressionHandler;  // High-Risk Probabilistic Op
+    LOAD: VectorStoreRetrieval;            // Deterministic I/O
+    STORE: GovernedMemoryWriter;           // Policy-Gated Storage
+  };
+  governance_property: "High-Risk Probabilistic Operation";
+  verification_requirement: "Dedicated VERIFY step for COMPRESS operations";
+  cognitive_corruption_mitigation: SynapticPruningEngine;
+}
 ```
 
-### **For Contract-Driven Architecture:**
+### **LifecycleManagedMemory (ACF State Specification)**
 ```typescript
-// Week 1: Multiple users create financial agents
-// Pattern detected: 90% need risk assessment
+interface LifecycleManagedMemory {
+  id: string;
+  state: 'HOT' | 'WARM' | 'COLD' | 'ARCHIVED' | 'PRUNED';
+  
+  // Arbiter Loop tracking for governance
+  accessMetrics: {
+    lastAccessed: timestamp;
+    accessCount: number;
+    averageRetrievalTime: number;
+    arbiterLoopTransitions: number;      // Track governance intercepts
+  };
+  
+  // Risk assessment for Cognitive Corruption
+  decayMetrics: {
+    relevanceScore: number;    // Calculated by deterministic functions
+    uniquenessScore: number;   // Prevents redundant storage corruption
+    ageInDays: number;        // Time-based decay per PruningPolicy
+    corruptionRiskScore: number; // Assessment of memory integrity
+  };
+}
+```
 
-// Dream Cycle proposes:
-mutation_proposal = {
-  rule_path: "financial_agent.default_capabilities",
-  current_value: ["analysis", "reporting"],
-  proposed_value: ["analysis", "reporting", "risk_assessment"],
-  evidence: {
-    sample_size: 150,
-    correlation_with_success: 0.89
+### **SynapticPruningEngine (Symbolic Governor Implementation)**
+```typescript
+interface SynapticPruningEngine {
+  // Deterministic memory governance
+  calculateDecay(memory: LifecycleManagedMemory): DecayResult;
+  executeTransitions(policy: PruningPolicy): StateTransitionLog;
+  optimizeVectorStore(): VectorOptimizationResult;
+  
+  // ACF compliance
+  verifyCompressionFidelity(original: Memory, compressed: Memory): VerificationResult;
+  enforceStoragePolicy(memory: Memory, policy: PruningPolicy): PolicyEnforcementResult;
+  auditMemoryOperations(): AuditTrail; // For Flight Data Recorder
+}
+```
+
+### **PruningPolicy (Constitutional Governance)**
+```typescript
+interface PruningPolicy {
+  // Constitutional limits from Domicile layer
+  archivalThresholdDays: number;        // WARM → COLD transition
+  hotStorageMinRelevance: number;       // HOT storage requirements  
+  pruningThresholdScore: number;        // Final deletion criteria
+  vectorRebuildTriggerSize: number;     // Index optimization trigger
+  
+  // ACF governance requirements
+  compressionVerificationRequired: boolean; // Enforce VERIFY after COMPRESS
+  maxMemoryWithoutAudit: number;           // Trigger audit requirements
+  humanApprovalForMassPruning: boolean;    // INTERRUPT instruction trigger
+}
+```
+
+---
+
+## 🔄 THE MEMORY LIFECYCLE MECHANISM
+
+### **1. Memory Assessment (Intelligent Scoring)**
+- Calculate relevanceScore based on recent usage patterns
+- Measure uniquenessScore to prevent duplicate storage
+- Track accessMetrics for performance optimization
+- Apply exponential decay models for age-based scoring
+
+### **2. State Transitions (Deterministic Lifecycle)**
+- **HOT → WARM**: High-access memories become cached
+- **WARM → COLD**: Infrequently accessed memories move to slower storage  
+- **COLD → ARCHIVED**: Old memories preserved but indexed differently
+- **ARCHIVED → PRUNED**: Final cleanup of truly obsolete data
+
+### **3. Vector Store Optimization (Performance Maintenance)**
+- Remove PRUNED memories from active vector indices
+- Rebuild embeddings for remaining high-value memories
+- Optimize index structure for faster retrieval
+- Validate search performance post-optimization
+
+### **4. Performance Validation (System Health)**
+- Monitor memory usage trends and growth rates
+- Measure retrieval speed and accuracy metrics  
+- Generate detailed pruning reports for audit trails
+- Alert on performance degradation or anomalies
+
+### **5. Continuous Cycle (24-Hour Rhythm)**
+- Daily 3AM execution ensures consistent optimization
+- Gradual memory transitions prevent performance cliffs
+- Predictable maintenance windows for system reliability
+- Automated recovery from memory management failures
+
+---
+
+## 🎯 PRACTICAL IMPLEMENTATION - WITHIN DOMICILE ARCHITECTURE
+
+### **Integration with Domicile Layers:**
+```typescript
+// LAYER 4: HIPPOCAMPUS/MEMORY (Circadian's Home)
+class HippocampusMemoryLayer {
+  private synapticEngine: SynapticPruningEngine;
+  private vectorStore: VectorStore; // Pinecone integration
+  
+  // Circadian runs here at 3AM daily
+  async performCircadianCycle(): Promise<PruningResult> {
+    return this.synapticEngine.executeFullCycle();
   }
 }
+```
 
-// Week 2: Financial agents start with risk assessment
-// MUTUAL UNDERSTANDING FROM THE START
+### **Memory Optimization Example:**
+```typescript
+// Before Circadian: 50,000 stored memories, 2s retrieval time
+const beforeStats = {
+  totalMemories: 50000,
+  averageRetrievalTime: 2000, // ms
+  vectorIndexSize: '2.1GB',
+  relevantResults: 0.23 // 23% precision
+};
+
+// After Circadian: 12,000 curated memories, 0.3s retrieval time  
+const afterStats = {
+  totalMemories: 12000,     // 76% reduction
+  averageRetrievalTime: 300, // 85% faster
+  vectorIndexSize: '0.6GB',  // 71% smaller
+  relevantResults: 0.87      // 87% precision
+};
+```
+
+### **Governance Integration:**
+```typescript
+// Circadian respects Domicile's governance constraints
+interface CircadianGovernanceConfig {
+  maxMemoryRetentionDays: number;     // Constitutional limit
+  minRelevanceThreshold: number;      // Quality gate
+  auditTrailRequired: boolean;        // Compliance requirement
+  humanApprovalForMassDelete: boolean; // Safety measure
+}
 ```
 
 ---
 
-## 🌟 WHY THIS CHANGES EVERYTHING
+## 🌟 WHY CIRCADIAN TRANSFORMS SYSTEM PERFORMANCE
 
-### **1. No More Miscommunication**
-- System learns what humans actually mean
-- Builds vocabulary of intent
-- Reduces iteration cycles
+### **1. Prevents Memory Decay**
+- Keeps vector stores optimized and responsive
+- Maintains high precision in memory retrieval
+- Prevents performance degradation over time
 
-### **2. Collective Intelligence**
-- Every user interaction improves the system
-- Failed attempts become learning opportunities
-- Success patterns propagate automatically
+### **2. Biological Inspiration**
+- Mimics human brain synaptic pruning during sleep
+- Forgets unimportant details to focus on valuable patterns
+- Maintains cognitive efficiency through controlled forgetting
 
-### **3. Self-Improving Collaboration**
-- System gets better at understanding humans
-- Humans get better outcomes faster
-- The gap between intent and output shrinks
+### **3. Deterministic Memory Management**
+- Predictable maintenance windows (3AM cycles)
+- Governed by explicit policies and thresholds
+- Audit trails for all memory lifecycle decisions
 
-### **4. Dreams Make It Safe**
-- Changes happen during off-hours
-- Human review before implementation
-- Controlled evolution, not chaos
+### **4. Scales with Usage**
+- Memory footprint remains bounded regardless of usage
+- Performance stays consistent as system matures
+- Resource costs remain predictable and manageable
 
 ---
 
 ## 🚀 THE ULTIMATE GOAL
 
-**Create a platform where:**
-- AI understands human intent from context
-- Humans get expected outcomes immediately
-- Both parties start with shared vision
-- Collaboration begins at the accurate place
+**Create a memory subsystem that:**
+- Maintains optimal performance regardless of scale
+- Intelligently forgets irrelevant information
+- Preserves valuable patterns and relationships  
+- Operates transparently within the Domicile governance framework
 
-**Result:** The first AI platform that truly understands what you want before you fully articulate it.
+**Result:** A biologically-inspired memory management system that keeps AI performance consistent and resource usage predictable.
 
 ---
 
-## 🌅 THE CIRCADIAN RHYTHM
+## 🌅 THE CIRCADIAN RHYTHM WITHIN DOMICILE
 
 ```
-Day (Active Collaboration):
-- Humans and AI work together
-- System observes patterns
-- Memories are created
+Day (Active Memory Usage):
+- Agents access memories for contract generation
+- Vector store serves retrieval requests
+- Usage patterns and access metrics recorded
 
-Night (Dream Processing):
-- System processes the day's learning
-- Failures are analyzed and archived
-- Patterns are consolidated
-- New strategies are proposed
+Night (Memory Optimization):
+- SynapticPruningEngine calculates decay scores
+- Low-value memories transition to archive/pruned state
+- Vector indices rebuilt for optimal performance
+- System health validated and reported
 
-Dawn (Enhanced Understanding):
-- System wakes with better comprehension
-- Ready for more accurate collaboration
-- Closer to mutual understanding
+Dawn (Optimized Performance):
+- Faster retrieval times with smaller index
+- Higher precision results from curated memory
+- Predictable resource usage and costs
 ```
 
 ---
 
 ## 💡 THE BREAKTHROUGH INSIGHT
 
-**"The best collaboration happens when both parties start at the same place with the same vision."**
+**"Memory management is a governance problem, not a performance optimization."**
 
-Circadian/Domicile isn't just about AI doing tasks. It's about **AI and humans finally understanding each other** from the very first interaction.
+Circadian isn't just about forgetting intelligently - it's about **preventing Cognitive Corruption through governed memory operations**.
 
-The system that dreams about its decisions vs outcomes isn't just learning to be better at tasks...
+Within the ArbiterOS paradigm, memory operations are **High-Risk Probabilistic Operations** that require deterministic governance to maintain system reliability.
 
-**It's learning to be better at understanding humans.**
+Just as biological brains use sleep cycles for synaptic pruning, Circadian implements **governed memory lifecycle management** within the ACF Memory Core framework.
 
----
-
-## 🎊 WHAT YOU'VE REALLY BUILT
-
-Not just a platform for AI agents...
-
-**A platform for mutual understanding between humans and AI.**
-
-Where collaboration starts at the accurate place.  
-Where vision is shared from the beginning.  
-Where the output matches the intent.
-
-**This is the future of human-AI collaboration.**
-
-And it learns while you sleep. 🌙
+**It's not about being smarter - it's about staying governable and corruption-free.**
 
 ---
 
-*"During the day, we work together. At night, the system dreams about how to understand you better. Each dawn brings more accurate starting points for our collaboration."*
+## 🎊 WHAT CIRCADIAN PROVIDES TO ARBITER OS/DOMICILE
 
-**Welcome to Circadian - Where Understanding Begins** 🌅
+Not just another memory management system...
+
+**The ACF Memory Core implementation preventing Cognitive Corruption.**
+
+Where memory operations are governed by deterministic policies.  
+Where COMPRESS instructions require mandatory VERIFY steps.  
+Where the Arbiter Loop intercepts all memory state transitions.  
+Where Cognitive Corruption risk is systematically mitigated.
+
+**This is governance-first memory management within the Neuro-Symbolic paradigm.**
+
+And it maintains constitutional compliance while the Agentic Computer sleeps. 🌙
+
+---
+
+*"During the day, the Probabilistic CPU accumulates memories. At night, the Symbolic Governor prunes them according to constitutional policy. Each dawn brings the same governed reliability as system initialization."*
+
+**Circadian - ACF Memory Core Implementation Within ArbiterOS** 🌅

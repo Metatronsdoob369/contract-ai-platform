@@ -10,54 +10,62 @@ declare global {
   }
 }
 
+// Type for flow sequence steps
+interface FlowStep {
+  nodes: string | string[];
+  path: string | string[] | null;
+  duration: number;
+  type?: 'split' | 'merge-pre' | 'dramatic' | 'loop';
+}
+
 // --- Static Data Definitions (Memoized) ---
 const nodeInfo = {
     source: {
         title: 'SOURCE', type: 'DOMICILE Layer',
-        description: 'The Monad. This is the origin point where thought is converted to matter, providing the initial energy and context for the entire system.',
-        inputs: 'Initial Context (Intention)', outputs: 'Action Potential (Energy)', guarantees: 'Root Intention',
-        position: { x: 600, y: 215 } // SVG coordinates
+        description: 'The Prime Mover. Origin point where intention converts to executable matter, providing initial energy and context for the entire contract-driven system.',
+        inputs: 'Human Intention', outputs: 'Action Potential', guarantees: 'Root Authority',
+        position: { x: 600, y: 215 }
     },
     pact: {
         title: 'PACT', type: 'COVENANT Layer',
-        description: 'The core promise. The high-level agreement that is refined into machine-readable structure (FORM) and behavioral rules (LAW).',
-        inputs: 'Source Stream', outputs: 'FORM (Structure), LAW (Policy)', guarantees: 'Structural Integrity',
+        description: 'The Constitutional Agreement. High-level promise refined into machine-readable structure (FORM) and enforceable behavioral rules (LAW).',
+        inputs: 'Source Energy', outputs: 'FORM + LAW Specifications', guarantees: 'Contract Integrity',
         position: { x: 600, y: 425 }
     },
     form: {
-        title: 'FORM', type: 'COVENANT Layer (Data Structure)',
-        description: 'Defines the exact shape, type, and format of all data. Ensures data inputs are safe and predictable before execution is considered.',
-        inputs: 'Data Structure Definition', outputs: 'Type Rules, Schema Manifest', guarantees: 'Type Safety & Schema Compliance',
-        position: { x: 300, y: 505 }
+        title: 'FORM', type: 'COVENANT Layer (Structure)',
+        description: 'Schema Definition Engine. Enforces exact shape, type, and format of all data structures before any execution consideration.',
+        inputs: 'Data Requirements', outputs: 'Type Schemas & Validation Rules', guarantees: 'Structural Compliance',
+        position: { x: 270, y: 505 }
     },
     law: {
-        title: 'LAW', type: 'COVENANT Layer (Policy)',
-        description: 'The complete set of policy, jurisdiction, and regulatory rules. Declares the boundaries within which the ACTOR must operate.',
-        inputs: 'Boundary Rules', outputs: 'Policy Config, Governance Manifest', guarantees: 'Bounded Action & Regulatory Adherence',
-        position: { x: 900, y: 505 }
+        title: 'LAW', type: 'COVENANT Layer (Governance)',
+        description: 'Policy Enforcement Engine. Complete regulatory framework declaring operational boundaries and compliance requirements.',
+        inputs: 'Governance Rules', outputs: 'Policy Manifests & Constraints', guarantees: 'Regulatory Adherence',
+        position: { x: 930, y: 505 }
     },
     test: {
-        title: 'TEST (Validation)', type: 'COVENANT Layer (Compliance)',
-        description: 'The automated compliance system that verifies the proposed action/data against the FORM (schema). **Validation** ensures data structure validity.',
-        inputs: 'Data Payload', outputs: 'Validated Data Stream', guarantees: 'Data Integrity & Schema Validation',
-        position: { x: 490, y: 585 }
+        title: 'TEST', type: 'COVENANT Layer (Validation)',
+        description: 'Automated Compliance Verifier. Validates all proposed actions and data against FORM schemas ensuring structural integrity.',
+        inputs: 'Data + Schema Rules', outputs: 'Validation Certificates', guarantees: 'Data Integrity',
+        position: { x: 500, y: 585 }
     },
     gate: {
-        title: 'GATE (Governance)', type: 'COVENANT Layer (Authority)',
-        description: 'The final gatekeeper. Checks the LAW (manifest) and grants final authority for execution. **Governance** ensures compliance and ethical boundary adherence.',
-        inputs: 'Validated Data, Policy Config', outputs: 'Execution Grant', guarantees: 'Compliance & Ethical Authority',
-        position: { x: 710, y: 585 }
+        title: 'GATE', type: 'COVENANT Layer (Authority)',
+        description: 'Final Authorization Gateway. Validates against LAW policies and grants execution authority ensuring ethical compliance.',
+        inputs: 'Validated Data + Policies', outputs: 'Execution Authorization', guarantees: 'Ethical Authority',
+        position: { x: 700, y: 585 }
     },
     actor: {
         title: 'ACTOR', type: 'ENGAGE Layer (Execution)',
-        description: 'The machine entity that performs the work. It only receives tasks that have passed all validation and governance checks (TEST and GATE).',
-        inputs: 'Execution Grant', outputs: 'Execution Log', guarantees: 'Accountability & Task Completion',
+        description: 'Execution Engine. Performs authorized work only after passing all validation and governance checkpoints (TEST + GATE).',
+        inputs: 'Execution Grant', outputs: 'Work Products + Logs', guarantees: 'Accountable Execution',
         position: { x: 600, y: 835 }
     },
     proof: {
-        title: 'PROOF', type: 'ENGAGE Layer (Audit Chain)',
-        description: 'An unchangeable, cryptographic record (Hash) of the executed action and the entire chain of approvals. Essential for auditability.',
-        inputs: 'Execution Log', outputs: 'Audit Chain Entry, Cryptographic Hash', guarantees: 'Auditability & Non-Repudiation',
+        title: 'PROOF', type: 'ENGAGE Layer (Audit)',
+        description: 'Cryptographic Audit Trail. Immutable hash chain recording executed actions and complete approval history for full auditability.',
+        inputs: 'Execution Logs', outputs: 'Hash Chain + Certificates', guarantees: 'Non-Repudiation',
         position: { x: 350, y: 835 }
     }
 };
@@ -75,7 +83,7 @@ const getPathData = () => [
 ];
 
 // --- Flow Sequence Definition ---
-const flowSequence = [
+const flowSequence: FlowStep[] = [
     // 1. Domicile to Pact
     { nodes: ['source'], path: 'conn-domicile-covenant', duration: 1200 },
     // 2. Pact (Pause and Split)
@@ -201,9 +209,12 @@ const App = () => {
 
     const resetConnections = useCallback(() => {
         document.querySelectorAll('.connection').forEach(conn => {
-            conn.classList.remove('active', 'payload');
+            conn.classList.remove('active', 'payload', 'spectacle');
             conn.setAttribute('marker-end', 'url(#arrowhead)');
-            (conn as SVGPathElement).style.strokeDashoffset = '0';
+            const path = conn as SVGPathElement;
+            path.style.strokeDashoffset = '0';
+            path.style.strokeDasharray = '';
+            path.style.transition = '';
         });
     }, []);
 
@@ -301,18 +312,32 @@ const App = () => {
             resetConnections();
             setActiveNodeId(null);
             
-            while (flowActive) {
+            while (flowActive && !signal?.aborted) {
                 // Main Loop
                 for (const step of flowSequence) {
-                    if (signal?.aborted) throw new Error('Aborted');
+                    if (signal?.aborted || !flowActive) throw new Error('Aborted');
                     
-                    // 1. Illuminate Node
+                    // 1. Illuminate Node(s)
                     const nodeIds = Array.isArray(step.nodes) ? step.nodes : [step.nodes];
-                    setActiveNodeId(nodeIds[0]); // Illuminate first node in array (or single node)
-                    await delay(step.duration / 3, signal); // Pause for illumination
+                    
+                    // Handle multiple nodes (for split scenarios)
+                    if (nodeIds.length > 1) {
+                        nodeIds.forEach(nodeId => {
+                            const nodeEl = document.querySelector(`.node-wrapper[data-id="${nodeId}"]`);
+                            nodeEl?.classList.add('active');
+                        });
+                        await delay(step.duration / 3, signal);
+                        nodeIds.forEach(nodeId => {
+                            const nodeEl = document.querySelector(`.node-wrapper[data-id="${nodeId}"]`);
+                            nodeEl?.classList.remove('active');
+                        });
+                    } else {
+                        setActiveNodeId(nodeIds[0]);
+                        await delay(step.duration / 3, signal);
+                    }
 
                     // 2. Animate Path(s)
-                    if (step.path) {
+                    if (step.path && !signal?.aborted) {
                         setActiveNodeId(null); // Clear node illumination while beam travels
                         
                         const paths = Array.isArray(step.path) ? step.path : [step.path];
@@ -325,10 +350,9 @@ const App = () => {
                     }
 
                     // 3. Special Step Handlers (Drama)
-                    if (step.type === 'dramatic') {
+                    if (step.type === 'dramatic' && !signal?.aborted) {
                         // Actor node drama
                         setActiveNodeId('actor');
-                        // Apply dramatic filter/glow to actor node for a short time
                         const actorNode = document.querySelector('.node-wrapper[data-id="actor"] .node-styled');
                         actorNode?.classList.add('dramatic-glow');
                         await delay(1000, signal);
@@ -336,24 +360,31 @@ const App = () => {
                     }
                     
                     // 4. Torus Field Return: Lightshow spectacle and loop end
-                    if (step.type === 'loop') {
+                    if (step.type === 'loop' && !signal?.aborted) {
                         setActiveNodeId('source'); // Final arrival at Source
+                        
                         // Implement Spectacle: Flash all nodes/paths briefly
-                        document.querySelectorAll('.node-styled').forEach(el => el.classList.add('spectacle'));
-                        document.querySelectorAll('.connection').forEach(el => el.classList.add('spectacle'));
+                        const allNodes = document.querySelectorAll('.node-styled');
+                        const allConnections = document.querySelectorAll('.connection');
+                        
+                        allNodes.forEach(el => el.classList.add('spectacle'));
+                        allConnections.forEach(el => el.classList.add('spectacle'));
                         
                         await delay(500, signal); // Flash duration
                         
-                        document.querySelectorAll('.node-styled').forEach(el => el.classList.remove('spectacle'));
-                        document.querySelectorAll('.connection').forEach(el => el.classList.remove('spectacle'));
+                        allNodes.forEach(el => el.classList.remove('spectacle'));
+                        allConnections.forEach(el => el.classList.remove('spectacle'));
+                        
+                        // Reset for next loop
+                        setActiveNodeId(null);
+                        resetConnections();
                         
                         // Wait before restarting the loop
-                        await delay(1000, signal);
+                        await delay(2000, signal);
                     }
                 }
             }
         } catch (error: any) {
-            // FIX: Check for the Aborted message, which is wrapped in an Error object.
             if (error.message !== 'Aborted') {
                 console.error("Flow sequence error:", error);
             }
@@ -577,11 +608,12 @@ const App = () => {
                 /* --- NODE STYLES (DIV BASED) --- */
                 .node-wrapper {
                     position: absolute;
-                    width: 120px;
-                    height: 70px;
+                    width: 140px;
+                    height: 80px;
                     z-index: 50;
                     cursor: pointer;
                     transition: opacity 0.3s;
+                    transform: translate(-50%, -50%); /* Center the nodes on their coordinates */
                 }
                 
                 .node-styled {
@@ -600,11 +632,12 @@ const App = () => {
 
                 /* Node Content & Text */
                 .node-label {
-                    font-size: 16px; font-weight: 700; color: rgba(255, 255, 255, 0.39); margin-top: 5px; transition: all 0.1s linear;
+                    font-size: 14px; font-weight: 700; color: rgba(255, 255, 255, 0.39); margin-top: 8px; transition: all 0.1s linear;
                     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.281), -0.5px -0.5px 1.5px rgba(255, 255, 255, 0.24);
+                    letter-spacing: 0.5px;
                 }
                 .node-icon {
-                    font-size: 20px; color: rgba(255, 255, 255, 0.39); transition: all 0.1s linear;
+                    font-size: 24px; color: rgba(255, 255, 255, 0.39); transition: all 0.1s linear;
                     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.281), -0.5px -0.5px 1.5px rgba(255, 255, 255, 0.24);
                 }
                 
@@ -669,8 +702,8 @@ const App = () => {
                 /* NOTE: Keep these here, as they are central to the overall design. */
 
                 .filter-vibe-btn {
-                    min-width: 100px; height: 40px;
-                    font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-size: 0.85rem;
+                    min-width: 110px; height: 42px;
+                    font-family: 'JetBrains Mono', monospace; text-transform: uppercase; font-size: 0.75rem;
                     background: linear-gradient(to bottom, #494949, rgb(156, 156, 156));
                     border-radius: 8px; 
                     display: flex; align-items: center; justify-content: center;
@@ -679,8 +712,9 @@ const App = () => {
                     cursor: pointer;
                     transition: all 0.15s ease-in-out;
                     box-shadow: 0px 2px 2px 2.5px rgba(54, 54, 54, 0.349);
-                    padding: 0 1rem;
+                    padding: 0 0.8rem;
                     border: none;
+                    letter-spacing: 0.5px;
                 }
                 
                 .filter-vibe-btn i, .filter-vibe-btn span {
@@ -736,22 +770,25 @@ const App = () => {
                 .info-panel { 
                     position: fixed; 
                     top: 50%; 
-                    /* Position 100px from the right edge of the viewport */
-                    right: 30px; 
+                    /* Position from the right edge of the viewport */
+                    right: 40px; 
                     transform: translateY(-50%) scale(0.9); 
-                    width: min(90vw, 350px); /* Reduced width */
-                    max-height: 80vh; /* Added max height for vertical screens */
+                    width: min(85vw, 380px); /* Slightly wider */
+                    max-height: 75vh; /* Better height constraint */
                     overflow-y: auto;
                     
-                    background: var(--slate-darker); 
-                    border: 3px solid var(--gold); 
-                    border-radius: 12px; 
-                    padding: 1.5rem; 
+                    background: linear-gradient(145deg, var(--slate-darker), #1a1f2e); 
+                    border: 2px solid var(--gold); 
+                    border-radius: 16px; 
+                    padding: 2rem; 
                     z-index: 200; 
                     opacity: 0; 
                     pointer-events: none; 
-                    transition: all 0.3s ease; 
-                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9); 
+                    transition: all 0.4s ease; 
+                    box-shadow: 
+                        0 20px 60px rgba(0, 0, 0, 0.8),
+                        0 0 0 1px rgba(201, 162, 39, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1); 
                 }
                 .info-panel.visible { 
                     opacity: 1; 
@@ -781,9 +818,9 @@ const App = () => {
                         <polyline points="30 40 50 65 70 40" stroke="var(--sage)"/>
                         <circle cx="50" cy="50" r="5" fill="var(--white)" stroke="none"/>
                     </svg>
-                    <span>COVENANT</span>
+                    <span>DOMICILE</span>
                 </div>
-                <span className="header-subtitle">Tactical Homebase Architecture</span>
+                <span className="header-subtitle">Contract-Driven Architecture Platform</span>
             </header>
 
             <div className="filter-controls">
@@ -794,11 +831,11 @@ const App = () => {
                         data-filter={filter}
                         onClick={() => applyFilter(filter)}
                     >
-                        {filter === 'all' && <><i className="fas fa-satellite-dish"></i><span>System All</span></>}
-                        {filter === 'contract' && <><i className="fas fa-handshake"></i><span>Pact Flow</span></>}
-                        {filter === 'validation' && <><i className="fas fa-vial"></i><span>Verify Chain</span></>}
-                        {filter === 'proof' && <><i className="fas fa-fingerprint"></i><span>Audit Proof</span></>}
-                        {filter === 'feedback' && <><i className="fas fa-redo-alt"></i><span>Feedback</span></>}
+                        {filter === 'all' && <><i className="fas fa-th"></i><span>Full System</span></>}
+                        {filter === 'contract' && <><i className="fas fa-handshake"></i><span>Contract</span></>}
+                        {filter === 'validation' && <><i className="fas fa-shield-alt"></i><span>Validation</span></>}
+                        {filter === 'proof' && <><i className="fas fa-certificate"></i><span>Proof</span></>}
+                        {filter === 'feedback' && <><i className="fas fa-sync-alt"></i><span>Loop</span></>}
                     </button>
                 ))}
             </div>
@@ -829,15 +866,15 @@ const App = () => {
                     </g>
                     
                     <g className="connections">
-                        <path id="conn-domicile-covenant" className="connection" d="M600,250 L600,310" markerEnd="url(#arrowhead)"/>
-                        <path id="conn-covenant-form" className="connection" d="M600,430 L300,470" markerEnd="url(#arrowhead)"/>
-                        <path id="conn-covenant-law" className="connection" d="M600,430 L900,470" markerEnd="url(#arrowhead)"/>
-                        <path id="conn-form-test" className="connection" d="M360,500 L500,560" markerEnd="url(#arrowhead)"/>
-                        <path id="conn-law-gate" className="connection" d="M840,500 L700,560" markerEnd="url(#arrowhead)"/>
-                        <path id="conn-test-gate" className="connection" d="M560,595 Q600,650 640,595" markerEnd="url(#arrowhead)"/>
-                        <path id="conn-gate-actor" className="connection" d="M600,650 L600,790" markerEnd="url(#arrowhead)"/>
-                        <path id="conn-actor-proof" className="connection" d="M540,830 L410,830" markerEnd="url(#arrowhead)"/>
-                        <path id="conn-actor-source" className="connection" d="M660,830 Q700,980 1100,980 L1100,180 Q1000,80 600,80" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-domicile-covenant" className="connection" d="M600,255 L600,385" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-covenant-form" className="connection" d="M570,430 L270,470" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-covenant-law" className="connection" d="M630,430 L930,470" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-form-test" className="connection" d="M270,510 L500,550" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-law-gate" className="connection" d="M930,510 L720,550" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-test-gate" className="connection" d="M530,580 Q600,620 670,580" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-gate-actor" className="connection" d="M600,590 L600,760" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-actor-proof" className="connection" d="M530,835 L360,835" markerEnd="url(#arrowhead)"/>
+                        <path id="conn-actor-source" className="connection" d="M670,830 Q800,950 1050,950 L1050,200 Q950,100 600,180" markerEnd="url(#arrowhead)"/>
                     </g>
                     
                     {/* The single payload circles are not needed here, as the animation is handled via stroke-dashoffset */}
@@ -853,14 +890,14 @@ const App = () => {
                 </svg>
 
                 <div className="nodes-div-container">
-                    {renderNode('source', 'SOURCE', 'fas fa-seedling', { left: '540px', top: '180px' })}
-                    {renderNode('pact', 'PACT', 'fas fa-handshake', { left: '540px', top: '390px' })}
-                    {renderNode('form', 'FORM', 'fas fa-border-all', { left: '240px', top: '470px' })}
-                    {renderNode('law', 'LAW', 'fas fa-scroll', { left: '840px', top: '470px' })}
-                    {renderNode('test', 'TEST', 'fas fa-vial', { left: '440px', top: '550px' })}
-                    {renderNode('gate', 'GATE', 'fas fa-shield-alt', { left: '640px', top: '550px' })}
-                    {renderNode('actor', 'ACTOR', 'fas fa-robot', { left: '540px', top: '800px' })}
-                    {renderNode('proof', 'PROOF', 'fas fa-fingerprint', { left: '290px', top: '800px' })}
+                    {renderNode('source', 'SOURCE', 'fas fa-radiation', { left: '600px', top: '215px' })}
+                    {renderNode('pact', 'PACT', 'fas fa-handshake', { left: '600px', top: '425px' })}
+                    {renderNode('form', 'FORM', 'fas fa-cube', { left: '270px', top: '505px' })}
+                    {renderNode('law', 'LAW', 'fas fa-balance-scale', { left: '930px', top: '505px' })}
+                    {renderNode('test', 'TEST', 'fas fa-check-circle', { left: '500px', top: '585px' })}
+                    {renderNode('gate', 'GATE', 'fas fa-door-open', { left: '700px', top: '585px' })}
+                    {renderNode('actor', 'ACTOR', 'fas fa-cogs', { left: '600px', top: '835px' })}
+                    {renderNode('proof', 'PROOF', 'fas fa-certificate', { left: '350px', top: '835px' })}
                 </div>
             </div>
             

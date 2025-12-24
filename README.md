@@ -1,334 +1,112 @@
-# OpenAI Agents SDK (JavaScript/TypeScript)
+# 🏗️ Domicile — Contract-Driven AI Platform
 
-[![npm version](https://badge.fury.io/js/@openai%2Fagents.svg)](https://badge.fury.io/js/@openai%2Fagents)
-[![CI](https://github.com/openai/openai-agents-js/actions/workflows/test.yml/badge.svg)](https://github.com/openai/openai-agents-js/actions/workflows/test.yml)
+**Status:** Integration Phase • **Architecture:** 6-layer contract stack synchronized by the Circadian loop
 
-The OpenAI Agents SDK is a lightweight yet powerful framework for building multi-agent workflows in JavaScript/TypeScript. It is provider-agnostic, supporting OpenAI APIs and more.
+Domicile treats agents like governed APIs. Contracts define the work, Covenant enforces trust, and the Circadian loop lets the system dream at 3 AM so it wakes up understanding you better.
 
-<img src="https://cdn.openai.com/API/docs/images/orchestration.png" alt="Image of the Agents Tracing UI" style="max-height: 803px;">
+## 🧠 Operating Narrative
 
-> [!NOTE]
-> Looking for the Python version? Check out [Agents SDK Python](https://github.com/openai/openai-agents-python).
+- **Agent Ecosystem Loop:** `domicile/docs/agent-ecosystem.ts` explains how the monorepo maps to Foundation, Monetization, Resilience, and Observability divisions.
+- **Semantic Refiner:** `domicile/docs/ecosystem-semantic-refiner.ts` defines the `IntentManifest`, metabolic states, and Circadian pulses that the MCP/CLI pass around.
+- **Agent Codex:** `docs/concepts/agent-codex.md` lists every UPS (Unit‑Per‑Skill) persona with the rules that keep them in sync.
 
-## Core concepts
+Pair these with `ARCHITECTURE.md` for the full six-layer breakdown.
 
-1. **Agents**: LLMs configured with instructions, tools, guardrails, and handoffs.
-2. **Handoffs**: Specialized tool calls for transferring control between agents.
-3. **Guardrails**: Configurable safety checks for input and output validation.
-4. **Tracing**: Built-in tracking of agent runs, allowing you to view, debug, and optimize your workflows.
+## 🗂 Monorepo Layout
 
-Explore the [`examples/`](examples/) directory to see the SDK in action.
+```
+domicile/
+├── packages/
+│   ├── core           # Layer 2: orchestrator, policy engine, agent registry
+│   ├── agents         # Layer 3: domain agents (financial, research, etc.)
+│   ├── contracts      # Layer 4: schemas + task contracts
+│   ├── covenant       # Layer 2 governance (trust, voice moat, oracles)
+│   ├── interface      # Layer 1 (MCP server, CLI, HTTP entrypoints)
+│   ├── data           # Layer 4 data plane (Pinecone client, trainpacks)
+│   └── observability  # Layer 5 telemetry dashboard + perf metrics
+├── docs/              # Architecture + Codex references
+├── scripts/           # Reset/start/stop helpers (real-estate demo, etc.)
+└── examples/          # Usage examples (kept local for now)
+```
 
-## Supported Features
-
-- [x] **Multi-Agent Workflows**: Compose and orchestrate multiple agents in a single workflow.
-- [x] **Tool Integration**: Seamlessly call tools/functions from within agent responses.
-- [x] **Handoffs**: Transfer control between agents dynamically during a run.
-- [x] **Structured Outputs**: Support for both plain text and schema-validated structured outputs.
-- [x] **Streaming Responses**: Stream agent outputs and events in real time.
-- [x] **Tracing & Debugging**: Built-in tracing for visualizing and debugging agent runs.
-- [x] **Guardrails**: Input and output validation for safety and reliability.
-- [x] **Parallelization**: Run agents or tool calls in parallel and aggregate results.
-- [x] **Human-in-the-Loop**: Integrate human approval or intervention into workflows.
-- [x] **Realtime Voice Agents**: Build realtime voice agents using WebRTC or WebSockets
-- [x] **Local MCP Server Support**: Give an Agent access to a locally running MCP server to provide tools
-- [x] **Separate optimized browser package**: Dedicated package meant to run in the browser for Realtime agents.
-- [x] **Broader model support**: Use non-OpenAI models through the Vercel AI SDK adapter
-- [ ] **Long running functions**: Suspend an agent loop to execute a long-running function and revive it later <img src="https://img.shields.io/badge/Future-lightgrey" alt="Future" style="width: auto; height: 1em; vertical-align: middle;">
-- [ ] **Voice pipeline**: Chain text-based agents using speech-to-text and text-to-speech into a voice agent <img src="https://img.shields.io/badge/Future-lightgrey" alt="Future" style="width: auto; height: 1em; vertical-align: middle;">
-
-## Get started
-
-### Supported environments
-
-- Node.js 22 or later
-- Deno
-- Bun
-
-Experimental support:
-
-- Cloudflare Workers with `nodejs_compat` enabled
-
-[Check out the documentation](https://openai.github.io/openai-agents-js/guides/troubleshooting/) for more detailed information.
-
-### Installation
+## ⚙️ Quick Start
 
 ```bash
-npm install @openai/agents zod@3
+cd /Users/joewales/NODE_OUT_Master/contract-ai-platform
+npm install                      # install workspaces
+npm run build                    # compile every package
+npm run test                     # run Vitest (mocks monitoring port 3001)
 ```
 
-## Hello world example
-
-```js
-import { Agent, run } from '@openai/agents';
-
-const agent = new Agent({
-  name: 'Assistant',
-  instructions: 'You are a helpful assistant',
-});
-
-const result = await run(
-  agent,
-  'Write a haiku about recursion in programming.',
-);
-console.log(result.finalOutput);
-// Code within the code,
-// Functions calling themselves,
-// Infinite loop's dance.
-```
-
-(_If running this, ensure you set the `OPENAI_API_KEY` environment variable_)
-
-## Functions example
-
-```js
-import { z } from 'zod';
-import { Agent, run, tool } from '@openai/agents';
-
-const getWeatherTool = tool({
-  name: 'get_weather',
-  description: 'Get the weather for a given city',
-  parameters: z.object({ city: z.string() }),
-  execute: async (input) => {
-    return `The weather in ${input.city} is sunny`;
-  },
-});
-
-const agent = new Agent({
-  name: 'Data agent',
-  instructions: 'You are a data agent',
-  tools: [getWeatherTool],
-});
-
-async function main() {
-  const result = await run(agent, 'What is the weather in Tokyo?');
-  console.log(result.finalOutput);
-}
-
-main().catch(console.error);
-```
-
-## Handoffs example
-
-```js
-import { z } from 'zod';
-import { Agent, run, tool } from '@openai/agents';
-
-const getWeatherTool = tool({
-  name: 'get_weather',
-  description: 'Get the weather for a given city',
-  parameters: z.object({ city: z.string() }),
-  execute: async (input) => {
-    return `The weather in ${input.city} is sunny`;
-  },
-});
-
-const dataAgent = new Agent({
-  name: 'Data agent',
-  instructions: 'You are a data agent',
-  handoffDescription: 'You know everything about the weather',
-  tools: [getWeatherTool],
-});
-
-// Use Agent.create method to ensure the finalOutput type considers handoffs
-const agent = Agent.create({
-  name: 'Basic test agent',
-  instructions: 'You are a basic agent',
-  handoffs: [dataAgent],
-});
-
-async function main() {
-  const result = await run(agent, 'What is the weather in San Francisco?');
-  console.log(result.finalOutput);
-}
-
-main().catch(console.error);
-```
-
-## Voice Agent
-
-```js
-import { z } from 'zod';
-import { RealtimeAgent, RealtimeSession, tool } from '@openai/agents-realtime';
-
-const getWeatherTool = tool({
-  name: 'get_weather',
-  description: 'Get the weather for a given city',
-  parameters: z.object({ city: z.string() }),
-  execute: async (input) => {
-    return `The weather in ${input.city} is sunny`;
-  },
-});
-
-const agent = new RealtimeAgent({
-  name: 'Data agent',
-  instructions:
-    'You are a data agent. When you are asked to check weather, you must use the available tools.',
-  tools: [getWeatherTool],
-});
-
-// Intended to run in the browser
-const { apiKey } = await fetch('/path/to/ephemeral/key/generation').then(
-  (resp) => resp.json(),
-);
-// Automatically configures audio input/output — start talking
-const session = new RealtimeSession(agent);
-await session.connect({ apiKey });
-```
-
-## Running Complete Examples
-
-The [`examples/`](examples/) directory contains a series of examples to get started:
-
-- `pnpm examples:basic` - Basic example with handoffs and tool calling
-- `pnpm examples:agents-as-tools` - Using agents as tools for translation
-- `pnpm examples:tools-web-search` - Using the web search tool
-- `pnpm examples:tools-file-search` - Using the file search tool
-- `pnpm examples:deterministic` - Deterministic multi-agent workflow
-- `pnpm examples:parallelization` - Running agents in parallel and picking the best result
-- `pnpm examples:human-in-the-loop` - Human approval for certain tool calls
-- `pnpm examples:streamed` - Streaming agent output and events in real time
-- `pnpm examples:streamed:human-in-the-loop` - Streaming output with human-in-the-loop approval
-- `pnpm examples:routing` - Routing between agents based on language or context
-- `pnpm examples:realtime-demo` - Framework agnostic Voice Agent example
-- `pnpm examples:realtime-next` - Next.js Voice Agent example application
-
-## The agent loop
-
-When you call `Runner.run()`, the SDK executes a loop until a final output is produced.
-
-1. The agent is invoked with the given input, using the model and settings configured on the agent (or globally).
-2. The LLM returns a response, which may include tool calls or handoff requests.
-3. If the response contains a final output (see below), the loop ends and the result is returned.
-4. If the response contains a handoff, the agent is switched to the new agent and the loop continues.
-5. If there are tool calls, the tools are executed, their results are appended to the message history, and the loop continues.
-
-You can control the maximum number of iterations with the `maxTurns` parameter.
-
-### Final output
-
-The final output is the last thing the agent produces in the loop.
-
-1. If the agent has an `outputType` (structured output), the loop ends when the LLM returns a response matching that type.
-2. If there is no `outputType` (plain text), the first LLM response without tool calls or handoffs is considered the final output.
-
-**Summary of the agent loop:**
-
-- If the current agent has an `outputType`, the loop runs until structured output of that type is produced.
-- If not, the loop runs until a message is produced with no tool calls or handoffs.
-
-### Error handling
-
-- If the maximum number of turns is exceeded, a `MaxTurnsExceededError` is thrown.
-- If a guardrail is triggered, a `GuardrailTripwireTriggered` exception is raised.
-
-## Documentation
-
-To view the documentation locally:
+### MCP + Real-Estate Demo Stack
 
 ```bash
-pnpm docs:dev
+export OPENAI_API_KEY=sk-...
+# optional Stripe for downstream flows
+export STRIPE_SECRET_KEY=sk_test_...
+
+# one-shot cleanup (stops MCP + demo servers, clears ports 5052/5053/8080)
+./scripts/reset-real-estate.sh
+
+# progressive startup (Zillow scraper → package service → MCP interface)
+./scripts/start-real-estate.sh
+
+# run the chained demo call once everything is online
+MCP_BASE_URL=http://localhost:8080 \
+MCP_BEARER_TOKEN=${MCP_BEARER_TOKEN:-dev-token-12345} \
+npm run demo:real-estate
+
+# later, stop them:
+./scripts/stop-real-estate.sh
 ```
 
-Then visit [http://localhost:4321](http://localhost:4321) in your browser.
+Need an alias? Add something like
+`alias killalldomicile='cd ~/NODE_OUT_Master/contract-ai-platform && ./scripts/reset-real-estate.sh'`
+to your `~/.zshrc`.
 
-## Development
+## 🔐 Why Contracts > Prompts
 
-If you want to contribute or edit the SDK/examples:
+| Traditional Prompting | Domicile |
+| --- | --- |
+| Fragile text instructions | Typed contracts validated with Zod |
+| Agent self-preference | Covenant trust scores + policy barriers |
+| Manual auditing | Ledger + observability dashboard (`@domicile/observability`) |
+| Static systems | Circadian loop proposes improvements off-hours |
 
-1. Install dependencies
+## 🧩 Foundation Highlights
 
-   ```bash
-   pnpm install
-   ```
+- **Circadian Loop:** Day = human + AI collaboration. Night = dream about decisions vs. outcomes. Dawn = new mutual understanding.
+- **Governance:** Circuit breakers, quarantine modes, and rollback ledgers ensure agents cannot skip the policy gate.
+- **Memory:** Pinecone-backed knowledge graph, trainpack builder, and ROI vectors keep monetization loops contextual.
+- **Observability:** Monitoring dashboard (Express + Tailwind) streaming SSE health data, accessible at `http://localhost:3001`.
 
-2. Build the project
+## 📚 Documentation Map
 
-   ```bash
-   pnpm build && pnpm -r build-check
-   ```
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — full six-layer blueprint.
+- [`docs/concepts/agent-codex.md`](./docs/concepts/agent-codex.md) — UPS personas + governance barriers.
+- [`domicile/DOMICILE_INTEGRATION_PLAN.md`](./domicile/DOMICILE_INTEGRATION_PLAN.md) — integration punch list.
+- [`domicile/COMPONENT_MAPPING.md`](./domicile/COMPONENT_MAPPING.md) — source → destination mapping.
+- [`domicile/CIRCADIAN_PHILOSOPHY.md`](./domicile/CIRCADIAN_PHILOSOPHY.md) — learning model.
+- [`domicile/docs/agent-ecosystem.ts`](./domicile/docs/agent-ecosystem.ts) & [`domicile/docs/ecosystem-semantic-refiner.ts`](./domicile/docs/ecosystem-semantic-refiner.ts) — narrative + semantic payloads.
 
-3. Run tests and linter
-
-   ```bash
-   pnpm test && pnpm lint
-   ```
-
-See `AGENTS.md` and `CONTRIBUTING.md` for the full contributor guide.
-
-## 🏗️ Domicile Integration - Contract-Driven AI Platform
-
-**🌟 New Addition:** This repository now includes the **Domicile platform** - a revolutionary contract-driven AI orchestration system with Circadian learning capabilities.
-
-### **What is Domicile?**
-
-Domicile extends the OpenAI Agents SDK with:
-- **Contract-driven architecture** eliminating prompt fragility
-- **Policy governance** preventing agent gaming and manipulation  
-- **Circadian learning** - the system dreams about decisions vs outcomes at 3AM
-- **Self-improving collaboration** between humans and AI
-
-### **Architecture Overview**
-
-```
-packages/domicile/
-├── core/           # Layer 2: Orchestration (Policy, Registry, Classifier)
-├── agents/         # Layer 3: Execution (Domain-specific agents)
-├── contracts/      # Layer 4: Contracts & Schemas  
-├── covenant/       # Layer 2: Governance (Trust oracles)
-├── interface/      # Layer 1: User Interface
-├── data/          # Layer 4: Storage & Knowledge
-└── observability/ # Layer 5: Monitoring
-```
-
-### **Key Innovation: The Sleep Cycle**
-
-Every night at 3AM, Domicile:
-- **Prunes** failed memories and approaches
-- **Consolidates** successful patterns
-- **Proposes** constitutional changes based on evidence
-- **Dreams** new experimental strategies
-- **Wakes** with better understanding of human intent
-
-### **Getting Started with Domicile**
+## 🧪 Development Scripts
 
 ```bash
-# Install the integrated platform
-pnpm install
-
-# View integration documentation  
-cat README-DOMICILE.md
-cat CIRCADIAN_PHILOSOPHY.md
-
-# Run Domicile integration
-pnpm run integrate
+npm run build:packages   # build each workspace
+npm run mcp:start -w @domicile/interface   # start the MCP server
+npm run demo:real-estate                    # run the documented demo
+CI=1 npm test                                # CI-friendly vitest run
 ```
 
-### **Integration Documents**
+## 🌅 Vision
 
-- 📋 [**DOMICILE_INTEGRATION_PLAN.md**](DOMICILE_INTEGRATION_PLAN.md) - Master blueprint
-- 🛣️ [**INTEGRATION_ROADMAP.md**](INTEGRATION_ROADMAP.md) - Implementation timeline
-- 🗺️ [**COMPONENT_MAPPING.md**](COMPONENT_MAPPING.md) - Component relocation details
-- 🌙 [**CIRCADIAN_PHILOSOPHY.md**](CIRCADIAN_PHILOSOPHY.md) - Learning architecture
+Domicile is the collaboration surface where:
+- Software understands what you mean the first time because contracts and manifests encode it.
+- Every failed attempt becomes a training signal the system reflects on overnight.
+- Agents evolve safely because Covenant refuses to ship anything with a resilience score < 80.
 
-### **The Vision**
-
-Create the first AI platform where humans and AI start with **mutual understanding** and **shared vision** of the output. Where collaboration begins at the accurate place, every time.
-
-**"The platform that dreams about its decisions vs outcomes, learning to understand you better while you sleep."** 🌅
+**It’s not just another SDK—it’s a governed ecosystem that learns while you sleep.**
 
 ---
 
-## Acknowledgements
-
-We'd like to acknowledge the excellent work of the open-source community, especially:
-
-- [zod](https://github.com/colinhacks/zod) (schema validation)
-- [Starlight](https://github.com/withastro/starlight)
-- [vite](https://github.com/vitejs/vite) and [vitest](https://github.com/vitest-dev/vitest)
-- [pnpm](https://pnpm.io/)
-- [Next.js](https://github.com/vercel/next.js)
-
-We're committed to building the Agents SDK as an open source framework so others in the community can expand on our approach.
-
-For more details, see the [documentation](https://openai.github.io/openai-agents-js) or explore the [`examples/`](examples/) directory.
+*"The platform that dreams about its decisions vs. outcomes, learning to understand you better while you sleep."*

@@ -4,7 +4,12 @@
  * Goal: Autonomous, Provably Correct, Quantum-Resilient CONTRACT FIRST Enforcement
  */
 
-import { BaseDomainAgent } from './base-domain-agent';
+import {
+  BaseDomainAgent,
+  type EnhancementArea,
+  type AgentContract,
+  type DomainAgentCapabilities,
+} from './core/base-domain-agent';
 
 // --- 1. Core Data Structures and Assurance Metrics ---
 
@@ -73,17 +78,60 @@ export const MINIMUM_PROPULSION_GUARD: number = 0.95; // guard: cvc_score > 0.95
 /**
  * The integrated toolset used by the qvsca_auditor agent.
  */
-const toolset: string[] =;
+const toolset: string[] = ['coq_verify', 'trotter_sim', 'forensic_similarity'];
+
+const DEFAULT_CANONICAL_PATTERNS = ['delegatecall', 'selfdestruct', 'tx.origin', 'keccak256'];
 
 export class QVSCA_Auditor_Agent extends BaseDomainAgent {
     readonly name: string = "qvsca_auditor"; // The autonomous agent responsible for the audit
 
     constructor() {
-        super({
-            name: "qvsca_auditor",
-            capabilities:,
+        super("security_auditing");
+    }
+
+    protected initializeCapabilities(): DomainAgentCapabilities {
+        return {
             domain: "security_auditing",
-            trust_score: 1.0 // Maximum trust for security-critical agent
+            capabilities: ["formal_verification", "adversarial_simulation", "forensic_analysis"],
+            supported_tasks: [
+                "Audit solidity contracts",
+                "Quantify reentrancy risk",
+                "Validate bytecode before deployment"
+            ],
+            trust_score: 1.0,
+            performance_metrics: {
+                success_rate: 0.99,
+                average_response_time: 1200,
+                total_invocations: 0
+            }
+        };
+    }
+
+    canHandle(area: EnhancementArea): boolean {
+        const keywords = ["contract", "bytecode", "solidity", "audit", "security"];
+        const description = `${area.name} ${area.objective} ${area.key_requirements.join(" ")}`.toLowerCase();
+        return keywords.some((keyword) => description.includes(keyword));
+    }
+
+    async generateContract(area: EnhancementArea): Promise<AgentContract> {
+        const bytecode = area.objective || "contract";
+        const audit = await this.audit_contract(bytecode);
+        const architecture = `QV-SCA Audit • CVC ${audit.cvc_score.toFixed(3)}`;
+
+        return this.formatAsContract(area, {
+            modules: ["Formal Verification", "Adversarial Simulation", "Forensic Trace"],
+            architecture,
+            sources: toolset,
+            security: "Blocking deployment unless MINIMUM_PROPULSION_GUARD satisfied",
+            compliance: "Covenant governance enforced",
+            ethics: "Zero-trust deployment posture",
+            validation_criteria: `cvc_score >= ${MINIMUM_PROPULSION_GUARD}`,
+            confidence: audit.cvc_score,
+            reasoning_trace: [
+                `spec_proof=${audit.spec_proof.status}`,
+                `max_exploit_prob=${audit.adv_sim.max_exploit_prob}`,
+                `forensic_score=${audit.forensic.similarity_score}`
+            ]
         });
     }
 
@@ -139,9 +187,8 @@ export class QVSCA_Auditor_Agent extends BaseDomainAgent {
         // TODO: Implement actual forensic trace analysis
         // For now, simulate forensic similarity scoring
         const normalizedBytecode = bytecode.replace(/\s+/g, '').toLowerCase();
-        const canonicalPatterns =;
-        const patternMatches = canonicalPatterns.filter(p => normalizedBytecode.includes(p)).length;
-        const similarity_score = Math.min(1.0, patternMatches / canonicalPatterns.length + 0.8);
+        const patternMatches = DEFAULT_CANONICAL_PATTERNS.filter(p => normalizedBytecode.includes(p)).length;
+        const similarity_score = Math.min(1.0, patternMatches / DEFAULT_CANONICAL_PATTERNS.length + 0.8);
 
         return {
             similarity_score,

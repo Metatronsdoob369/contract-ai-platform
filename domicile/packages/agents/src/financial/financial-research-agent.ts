@@ -123,8 +123,8 @@ export class FinancialResearchDomainAgent extends BaseDomainAgent {
         modules: this.extractModulesFromReport(report),
         architecture: report.markdown_report
       },
-      depends_on: area.depends_on ||,
-      sources: searchResults.map((result, i) => `Search Result ${i + 1}`),
+      depends_on: area.depends_on ?? [],
+      sources: searchResults.map((_, i) => `Search Result ${i + 1}`),
       governance: {
         security: 'Financial data handling with secure API access',
         compliance: 'SEC regulations, financial data privacy compliance',

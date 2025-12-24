@@ -102,28 +102,28 @@ export abstract class BaseDomainAgent {
    */
   protected formatAsContract(
     area: EnhancementArea,
-    agentOutput: any,
+    agentOutput: Record<string, unknown>,
     metadata?: Partial<AgentContract['metadata']>
   ): AgentContract {
     return {
       enhancement_area: area.name,
       objective: area.objective,
       implementation_plan: {
-        modules: agentOutput.modules ||,
-        architecture: agentOutput.architecture || agentOutput.summary || ''
+        modules: (agentOutput.modules as string[]) ?? [],
+        architecture: (agentOutput.architecture as string) ?? (agentOutput.summary as string) ?? ''
       },
-      depends_on: area.depends_on ||,
-      sources: area.sources || agentOutput.sources ||,
+      depends_on: area.depends_on ?? [],
+      sources: area.sources ?? ((agentOutput.sources as string[]) ?? []),
       governance: {
-        security: agentOutput.security || 'Standard security protocols',
-        compliance: agentOutput.compliance || `${this.domain} domain compliance`,
-        ethics: agentOutput.ethics || 'Ethical AI principles applied'
+        security: (agentOutput.security as string) ?? 'Standard security protocols',
+        compliance: (agentOutput.compliance as string) ?? `${this.domain} domain compliance`,
+        ethics: (agentOutput.ethics as string) ?? 'Ethical AI principles applied'
       },
-      validation_criteria: agentOutput.validation_criteria || 'Contract validation pending',
+      validation_criteria: (agentOutput.validation_criteria as string) ?? 'Contract validation pending',
       metadata: {
         generated_at: new Date(),
-        confidence: agentOutput.confidence || 0.8,
-        reasoning_trace: agentOutput.reasoning_trace ||,
+        confidence: (agentOutput.confidence as number) ?? 0.8,
+        reasoning_trace: (agentOutput.reasoning_trace as string[]) ?? [],
         ...metadata
       }
     };

@@ -149,3 +149,5 @@ bundled/
 
 .wrangler/
 .dev.vars
+.demo-logs/
+.demo-logs/

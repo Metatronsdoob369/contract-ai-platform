@@ -4,7 +4,7 @@
  * Adapted from examples/financial-research-agent for orchestrator integration
  */
 
-import { Agent, run, RunResult, webSearchTool } from '@openai/agents';
+import { Agent, run, RunResult } from '@openai/agents';
 import { z } from 'zod';
 import {
   FinancialSearchItem,
@@ -69,7 +69,7 @@ export const searchAgent = new Agent({
   name: 'FinancialSearchAgent',
   instructions: searchAgentPrompt,
   model: 'gpt-4o',
-  tools:,
+  tools: [],
   modelSettings: { toolChoice: 'required' },
 });
 
@@ -183,7 +183,7 @@ export class FinancialResearchManager {
     });
     
     const writerWithTools = writerAgent.clone({
-      tools:,
+      tools: [fundamentalsTool, riskTool],
     });
     
     console.log(`[FinancialManager] Generating report...`);

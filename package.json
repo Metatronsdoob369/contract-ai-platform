@@ -1,7 +1,27 @@
 {
   "private": true,
-  "name": "openai-agents-js",
-  "version": "0.0.1",
+  "name": "@domicile/platform",
+  "version": "0.1.0",
+  "description": "Contract-driven AI governance platform. Contracts > Prompts. The system that learns while you sleep.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Metatronsdoob369/Domicile.git"
+  },
+  "keywords": [
+    "ai",
+    "agents",
+    "contracts",
+    "governance",
+    "circadian-learning",
+    "openai",
+    "mcp",
+    "autonomous",
+    "orchestration",
+    "zod",
+    "typescript"
+  ],
+  "author": "Joe Wales",
+  "license": "SEE LICENSE IN LICENSE",
   "scripts": {
     "clean": "tsc-multi --clean",
     "prebuild": "pnpm -F @openai/* -r prebuild",

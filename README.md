@@ -1,21 +1,39 @@
-# 🏗️ Domicile — Contract-Driven AI Platform
+# 🏗️ Domicile — Contract-Driven AI Governance Platform
 
-**Status:** Integration Phase • **Architecture:** 6-layer contract stack synchronized by the Circadian loop
+![License](https://img.shields.io/github/license/Metatronsdoob369/Domicile)
+![GitHub last commit](https://img.shields.io/github/last-commit/Metatronsdoob369/Domicile)
 
-Domicile treats agents like governed APIs. Contracts define the work, Covenant enforces trust, and the Circadian loop lets the system dream at 3 AM so it wakes up understanding you better.
+**Status:** Production Phase • **Architecture:** Fractal switchboard (MOS) with 6-layer contract stack
 
-## 🧠 Operating Narrative
+Domicile eliminates the prompt era. Contracts > Prompts. The system learns while you sleep.
 
-- **Agent Ecosystem Loop:** `domicile/docs/agent-ecosystem.ts` explains how the monorepo maps to Foundation, Monetization, Resilience, and Observability divisions.
-- **Semantic Refiner:** `domicile/docs/ecosystem-semantic-refiner.ts` defines the `IntentManifest`, metabolic states, and Circadian pulses that the MCP/CLI pass around.
-- **Agent Codex:** `docs/concepts/agent-codex.md` lists every UPS (Unit‑Per‑Skill) persona with the rules that keep them in sync.
+## 🚀 Start Here
 
-Pair these with `ARCHITECTURE.md` for the full six-layer breakdown.
+**New to Domicile?** Read these in order:
+1. **[VISION.md](./VISION.md)** - What Domicile is and why it exists
+2. **[QUICK_START.md](./QUICK_START.md)** - Get running in 5 minutes
+3. **[SESSION_START.md](./SESSION_START.md)** - Agent session template
+4. **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Full technical architecture
+
+## 🧠 Core Concept
+
+Domicile is the platform where:
+- **Humans contribute:** Architecture, contracts, governance rules
+- **AI contributes:** Execution within contracts, learning from outcomes
+- **System ensures:** Neither party fails the other
+
+### The Problem with Prompts
+1. Humans can't perfectly articulate intent in natural language
+2. LLMs over-interpret or misinterpret instructions
+3. **Neither party can trust the outcome**
+
+### The Domicile Solution
+Every interaction is a **contract** (typed Zod schema), not a prompt. The **policy engine** governs execution. The **Circadian loop** learns overnight from decisions vs. outcomes.
 
 ## 🗂 Monorepo Layout
 
 ```
-domicile/
+domicile_live/
 ├── packages/
 │   ├── core           # Layer 2: orchestrator, policy engine, agent registry
 │   ├── agents         # Layer 3: domain agents (financial, research, etc.)
@@ -25,44 +43,40 @@ domicile/
 │   ├── data           # Layer 4 data plane (Pinecone client, trainpacks)
 │   └── observability  # Layer 5 telemetry dashboard + perf metrics
 ├── docs/              # Architecture + Codex references
-├── scripts/           # Reset/start/stop helpers (real-estate demo, etc.)
-└── examples/          # Usage examples (kept local for now)
+├── scripts/           # Reset/start/stop helpers
+└── examples/          # Usage examples
 ```
 
 ## ⚙️ Quick Start
 
 ```bash
-cd /Users/joewales/NODE_OUT_Master/contract-ai-platform
-npm install                      # install workspaces
-npm run build                    # compile every package
-npm run test                     # run Vitest (mocks monitoring port 3001)
+cd ~/domicile_live
+pnpm install                  # install workspaces
+pnpm build                    # compile every package
+pnpm test                     # run Vitest
 ```
 
-### MCP + Real-Estate Demo Stack
+### Environment Variables
+
+Copy `.env.example` and configure:
+```bash
+cp .env.example .env
+# Edit .env with your API keys
+```
+
+Required variables documented in `.env.example`.
+
+### MCP Server
 
 ```bash
 export OPENAI_API_KEY=sk-...
-# optional Stripe for downstream flows
-export STRIPE_SECRET_KEY=sk_test_...
 
-# one-shot cleanup (stops MCP + demo servers, clears ports 5052/5053/8080)
-./scripts/reset-real-estate.sh
+# Start the MCP server
+pnpm run mcp:start -w @domicile/interface
 
-# progressive startup (Zillow scraper → package service → MCP interface)
-./scripts/start-real-estate.sh
-
-# run the chained demo call once everything is online
-MCP_BASE_URL=http://localhost:8080 \
-MCP_BEARER_TOKEN=${MCP_BEARER_TOKEN:-dev-token-12345} \
-npm run demo:real-estate
-
-# later, stop them:
-./scripts/stop-real-estate.sh
+# In another terminal, run demos
+pnpm run demo:real-estate
 ```
-
-Need an alias? Add something like
-`alias killalldomicile='cd ~/NODE_OUT_Master/contract-ai-platform && ./scripts/reset-real-estate.sh'`
-to your `~/.zshrc`.
 
 ## 🔐 Why Contracts > Prompts
 
@@ -70,7 +84,7 @@ to your `~/.zshrc`.
 | --- | --- |
 | Fragile text instructions | Typed contracts validated with Zod |
 | Agent self-preference | Covenant trust scores + policy barriers |
-| Manual auditing | Ledger + observability dashboard (`@domicile/observability`) |
+| Manual auditing | Ledger + observability dashboard |
 | Static systems | Circadian loop proposes improvements off-hours |
 
 ## 🧩 Foundation Highlights
@@ -78,34 +92,57 @@ to your `~/.zshrc`.
 - **Circadian Loop:** Day = human + AI collaboration. Night = dream about decisions vs. outcomes. Dawn = new mutual understanding.
 - **Governance:** Circuit breakers, quarantine modes, and rollback ledgers ensure agents cannot skip the policy gate.
 - **Memory:** Pinecone-backed knowledge graph, trainpack builder, and ROI vectors keep monetization loops contextual.
-- **Observability:** Monitoring dashboard (Express + Tailwind) streaming SSE health data, accessible at `http://localhost:3001`.
+- **Observability:** Monitoring dashboard streaming SSE health data at `http://localhost:3001`.
+
+## 🏛️ Master Orchestration System (MOS)
+
+The autonomous engine is **deployed and running** on Supabase:
+- **Production URL:** `https://rnarigclezfhlzrqueiq.supabase.co`
+- **Architecture:** Fractal switchboard routing requests across products (DispoAI, CA-CAO, TARS)
+- **Learning:** Dream cycles review executions vs. outcomes at 3 AM
+- **Governance:** Constitutional router validates all requests
+
+See `AUTONOMOUS_ENGINE_MAP.md` for integration details.
 
 ## 📚 Documentation Map
 
-- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — full six-layer blueprint.
-- [`docs/concepts/agent-codex.md`](./docs/concepts/agent-codex.md) — UPS personas + governance barriers.
-- [`domicile/DOMICILE_INTEGRATION_PLAN.md`](./domicile/DOMICILE_INTEGRATION_PLAN.md) — integration punch list.
-- [`domicile/COMPONENT_MAPPING.md`](./domicile/COMPONENT_MAPPING.md) — source → destination mapping.
-- [`domicile/CIRCADIAN_PHILOSOPHY.md`](./domicile/CIRCADIAN_PHILOSOPHY.md) — learning model.
-- [`domicile/docs/agent-ecosystem.ts`](./domicile/docs/agent-ecosystem.ts) & [`domicile/docs/ecosystem-semantic-refiner.ts`](./domicile/docs/ecosystem-semantic-refiner.ts) — narrative + semantic payloads.
+- [`VISION.md`](./VISION.md) — North star: what Domicile is and why
+- [`ARCHITECTURE.md`](./ARCHITECTURE.md) — Full six-layer blueprint
+- [`SESSION_START.md`](./SESSION_START.md) — Template for agent sessions
+- [`CIRCADIAN_LOG.md`](./CIRCADIAN_LOG.md) — Learning reflections
+- [`docs/concepts/agent-codex.md`](./docs/concepts/agent-codex.md) — UPS personas + governance
+- [`domicile/CIRCADIAN_PHILOSOPHY.md`](./domicile/CIRCADIAN_PHILOSOPHY.md) — Learning model
+- [`domicile/docs/agent-ecosystem.ts`](./domicile/docs/agent-ecosystem.ts) — Narrative + semantic payloads
 
 ## 🧪 Development Scripts
 
 ```bash
-npm run build:packages   # build each workspace
-npm run mcp:start -w @domicile/interface   # start the MCP server
-npm run demo:real-estate                    # run the documented demo
-CI=1 npm test                                # CI-friendly vitest run
+pnpm build                              # build all workspaces
+pnpm run mcp:start -w @domicile/interface   # start MCP server
+pnpm run demo:real-estate                   # run documented demo
+CI=1 pnpm test                              # CI-friendly vitest run
 ```
 
 ## 🌅 Vision
 
 Domicile is the collaboration surface where:
-- Software understands what you mean the first time because contracts and manifests encode it.
-- Every failed attempt becomes a training signal the system reflects on overnight.
-- Agents evolve safely because Covenant refuses to ship anything with a resilience score < 80.
+- Software understands what you mean the first time because contracts encode it
+- Every failed attempt becomes a training signal the system reflects on overnight
+- Agents evolve safely because Covenant refuses to ship anything with resilience score < 80
 
-**It’s not just another SDK—it’s a governed ecosystem that learns while you sleep.**
+**It's not just another SDK—it's a governed ecosystem that learns while you sleep.**
+
+## 🤝 Contributing
+
+See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for guidelines.
+
+## 📄 License
+
+See [`LICENSE`](./LICENSE) for details.
+
+## 🔒 Security
+
+See [`SECURITY.md`](./SECURITY.md) for vulnerability reporting.
 
 ---
 
